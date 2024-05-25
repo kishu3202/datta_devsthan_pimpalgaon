@@ -12,7 +12,7 @@ class _AratiScreenState extends State<AratiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("आरती संग्रह"),
+        title: Text("Arati"),
         centerTitle: true,
       ),
     );
