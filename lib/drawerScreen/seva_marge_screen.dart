@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SevaMargScreen extends StatefulWidget {
   const SevaMargScreen({super.key});
@@ -10,6 +11,10 @@ class SevaMargScreen extends StatefulWidget {
 class _SevaMargScreenState extends State<SevaMargScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text("सेवामार्ग",style: TextStyle(color: Colors.white,fontSize: 18),),
+        centerTitle: true,
+      ),
+    );
   }
 }

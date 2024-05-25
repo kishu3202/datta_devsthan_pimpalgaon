@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({super.key});
@@ -10,6 +10,10 @@ class ContactScreen extends StatefulWidget {
 class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text("संपर्क",style: TextStyle(color: Colors.white,fontSize: 18),),
+        centerTitle: true,
+      ),
+    );
   }
 }

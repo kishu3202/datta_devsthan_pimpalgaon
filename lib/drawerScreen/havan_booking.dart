@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class HavanBookingScreen extends StatefulWidget {
   const HavanBookingScreen({super.key});
@@ -10,6 +11,9 @@ class HavanBookingScreen extends StatefulWidget {
 class _HavanBookingScreenState extends State<HavanBookingScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text('हवन बुकिंग',style: TextStyle(color: Colors.white,fontSize: 18)),
+      centerTitle: true,),
+    );
   }
 }

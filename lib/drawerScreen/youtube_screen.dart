@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class YoutubeScreen extends StatefulWidget {
   const YoutubeScreen({super.key});
@@ -10,6 +11,10 @@ class YoutubeScreen extends StatefulWidget {
 class _YoutubeScreenState extends State<YoutubeScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text("YouTube",style: TextStyle(color: Colors.white,fontSize: 18)),
+    centerTitle: true,
+    ),
+    );
   }
 }

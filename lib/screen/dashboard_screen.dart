@@ -129,7 +129,7 @@ appBar: AppBar(
                   ),
                 ),
                 SizedBox(
-                  height: 100,
+                  height: 60,
                 ),
                 ListTile(
                   leading: Icon(Icons.logout, color: Colors.white,),

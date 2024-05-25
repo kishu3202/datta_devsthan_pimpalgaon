@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
+
+import 'package:flutter/material.dart';
 
 class DonationScreen extends StatefulWidget {
   const DonationScreen({super.key});
@@ -10,6 +12,10 @@ class DonationScreen extends StatefulWidget {
 class _DonationScreenState extends State<DonationScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text("देणगी",style: TextStyle(color: Colors.white,fontSize: 18)),
+        centerTitle: true,
+      ),
+    );
   }
 }

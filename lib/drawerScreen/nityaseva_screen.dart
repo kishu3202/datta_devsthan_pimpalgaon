@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class NityasevaScreen extends StatefulWidget {
   const NityasevaScreen({super.key});
@@ -10,6 +11,10 @@ class NityasevaScreen extends StatefulWidget {
 class _NityasevaScreenState extends State<NityasevaScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text('नित्यसेवा',style: TextStyle(color: Colors.white,fontSize: 18)),
+        centerTitle: true,
+      ),
+    );
   }
 }
