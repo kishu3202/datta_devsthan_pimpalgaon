@@ -12,7 +12,7 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('हवन बुकिंग',style: TextStyle(color: Colors.white,fontSize: 18)),
+      appBar: AppBar(title: Text('हवन',style: TextStyle(color: Colors.white,fontSize: 18)),
       centerTitle: true,),
     );
   }

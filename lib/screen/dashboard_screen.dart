@@ -1,5 +1,6 @@
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/dipdan_screen.dart';
-import 'package:datta_devsthan_pimpalgaon/drawerScreen/havan_booking.dart';
+import 'package:datta_devsthan_pimpalgaon/drawerScreen/havanScreen/havan_booking.dart';
+import 'package:datta_devsthan_pimpalgaon/drawerScreen/havanScreen/havan_screen.dart';
 import 'package:flutter/material.dart';
 import '../drawerScreen/aratiScreen/aratiScreen.dart';
 import '../drawerScreen/contact_screen.dart';
@@ -85,7 +86,7 @@ appBar: AppBar(
                 ),
                 InkWell(onTap: () {
                   Navigator.push(context,  MaterialPageRoute(
-                      builder: (context) => HavanBookingScreen()),);
+                      builder: (context) => HavanScreen()),);
                 },
                   child: ListTile(
                     leading: Icon(Icons.list_alt, color: Colors.white,),

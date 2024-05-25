@@ -13,6 +13,18 @@ class _DipdanScreenState extends State<DipdanScreen> {
     return Scaffold(
       appBar: AppBar(title: Text("दीपदान",style: TextStyle(color: Colors.white,fontSize: 18),),
       centerTitle: true,),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                child: Image(image: AssetImage("asset/images/dipdan.jpeg"),),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -16,6 +16,16 @@ class _DonationScreenState extends State<DonationScreen> {
       appBar: AppBar(title: Text("देणगी",style: TextStyle(color: Colors.white,fontSize: 18)),
         centerTitle: true,
       ),
+      body: Column(
+children: [
+Padding(
+  padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+  child: Container(
+  child: Image(image: AssetImage('asset/images/scannerImage.jpeg'),),
+  ),
+),
+],
+      ),
     );
   }
 }

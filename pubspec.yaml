@@ -81,6 +81,7 @@ flutter:
     - asset/images/namsmaran.jpeg
     - asset/images/namsmaran1.jpeg
     - asset/images/scannerImage.jpeg
+    - asset/images/dipdan.jpeg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
