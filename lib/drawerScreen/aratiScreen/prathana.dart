@@ -1,5 +1,4 @@
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/aratiScreen/dattaguru_arati.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PrathanaScreen extends StatefulWidget {
