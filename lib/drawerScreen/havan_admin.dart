@@ -5,25 +5,24 @@ import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-import 'havan_booking_form.dart';
 
-class HavanBookingScreen extends StatefulWidget {
-  const HavanBookingScreen({super.key});
+
+class HavanBookingAdminScreen extends StatefulWidget {
+  const HavanBookingAdminScreen({super.key});
 
   @override
-  State<HavanBookingScreen> createState() => _HavanBookingScreenState();
+  State<HavanBookingAdminScreen> createState() => _HavanBookingAdminScreenState();
 }
 
-class _HavanBookingScreenState extends State<HavanBookingScreen> {
+class _HavanBookingAdminScreenState extends State<HavanBookingAdminScreen> {
   final usersQuery = FirebaseFirestore.instance
-      .collection('appointments')
-      .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid);
+      .collection('appointments');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('हवन',
+        title: const Text('हवन (Admin)',
             style: TextStyle(color: Colors.white, fontSize: 18)),
         centerTitle: true,
       ),
@@ -35,21 +34,16 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
           final String name = appointment['name'];
           final Timestamp date = appointment['date'];
           final String slot = appointment['slot'];
+          final String telephone = appointment['telephone'];
+          final String address = appointment['address'];
           return ListTile(
             subtitle: Text(
-                'Date: ${DateFormat.yMMMd().format(date.toDate())} slot: $slot'),
+                'Date: ${DateFormat.yMMMd().format(date.toDate())} slot: $slot contact: $telephone \n $address'),
             title: Text(name),
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const HavanBooking()));
-        },
-        tooltip: 'Add Booking',
-        child: const Icon(Icons.add),
-      ),
+
     );
   }
 }

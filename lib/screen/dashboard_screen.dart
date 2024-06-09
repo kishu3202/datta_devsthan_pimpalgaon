@@ -1,12 +1,14 @@
 
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/dipdan_screen.dart';
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/havanScreen/havan_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 import 'package:flutter/material.dart';
 import '../drawerScreen/aratiScreen/aratiScreen.dart';
 import '../drawerScreen/contact_screen.dart';
 import '../drawerScreen/donation_screen.dart';
+import '../drawerScreen/havan_admin.dart';
 import '../drawerScreen/nityaseva_screen.dart';
 import '../drawerScreen/seva_marge_screen.dart';
 import '../drawerScreen/youtube_screen.dart';
@@ -61,6 +63,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           // }, icon: Icon(Icons.logout, color: Colors.white,))
         ],
       ),
+      body: const Center(child: Text('Welcome to dashboard'),),
 
       drawer: Drawer(
         backgroundColor: Colors.orange,
@@ -255,15 +258,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
+                  if(FirebaseAuth.instance.currentUser!.email=='guruaugust@gmail.com')
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HavanBookingAdminScreen()),
+                      );
+                    },
+                    child: const ListTile(
+                      leading: Icon(
+                        Icons.list_alt,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'हवन बुकिंग (Admin)',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 60,
                   ),
-                  const ListTile(
-                    leading: Icon(
+                   ListTile(
+                    onTap: (){
+                      FirebaseUIAuth.signOut(
+                        context: context,
+
+                      );
+
+                    },
+                    leading: const Icon(
                       Icons.logout,
                       color: Colors.white,
                     ),
-                    title: Text(
+                    title: const Text(
                       'Logout',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
