@@ -14,7 +14,7 @@ class _HavanScreenState extends State<HavanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('हवन बुकिंग',style: TextStyle(color: Colors.white,fontSize: 18)), centerTitle: true,),
+      appBar: AppBar(title: const Text('हवन बुकिंग',style: TextStyle(color: Colors.white,fontSize: 18)), centerTitle: true,),
       body: Column(
         children: [
           Padding(
@@ -23,7 +23,7 @@ class _HavanScreenState extends State<HavanScreen> {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
+                      //primary: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       )),
@@ -31,22 +31,17 @@ class _HavanScreenState extends State<HavanScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HavanMaterial(
+                            builder: (context) => const HavanMaterial(
                             )));
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: const Text(
-                          "हवन साहित्य",
-                          style: TextStyle(
-                            color: Colors.orange, // Set the text color
-                            fontSize: 18,
-                          ),
-                        ),
+                  child: const Center(
+                    child: Text(
+                      "हवन साहित्य",
+                      style: TextStyle(
+                        //color: Colors.orange, // Set the text color
+                        fontSize: 18,
                       ),
-                    ],
+                    ),
                   )),
             ),
           ),
@@ -56,7 +51,7 @@ class _HavanScreenState extends State<HavanScreen> {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
+                      //primary: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       )),
@@ -64,23 +59,18 @@ class _HavanScreenState extends State<HavanScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HavanBookingScreen(
+                            builder: (context) => const HavanBookingScreen(
                             )));
                   },
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: const Text(
-                          "हवन बुकिंग",
-                          style: TextStyle(
-                            color: Colors.orange, // Set the text color
-                            fontSize: 18,
-                          ),
-                        ),
+                  child: const Center(
+                    child: Text(
+                      "हवन बुकिंग",
+                      style: TextStyle(
+                        //color: Colors.orange, // Set the text color
+                        fontSize: 18,
                       ),
-                    ],
+                    ),
                   )),
             ),
           ),
