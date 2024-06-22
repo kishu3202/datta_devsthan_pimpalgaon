@@ -23,7 +23,7 @@ class _HavanScreenState extends State<HavanScreen> {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      //primary: Colors.white,
+                      backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       )),
@@ -38,7 +38,7 @@ class _HavanScreenState extends State<HavanScreen> {
                     child: Text(
                       "हवन साहित्य",
                       style: TextStyle(
-                        //color: Colors.orange, // Set the text color
+                        color: Colors.orange, // Set the text color
                         fontSize: 18,
                       ),
                     ),
@@ -51,7 +51,7 @@ class _HavanScreenState extends State<HavanScreen> {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      //primary: Colors.white,
+                      backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       )),
@@ -67,7 +67,7 @@ class _HavanScreenState extends State<HavanScreen> {
                     child: Text(
                       "हवन बुकिंग",
                       style: TextStyle(
-                        //color: Colors.orange, // Set the text color
+                        color: Colors.orange, // Set the text color
                         fontSize: 18,
                       ),
                     ),

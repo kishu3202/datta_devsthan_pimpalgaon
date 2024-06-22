@@ -1,7 +1,6 @@
-import 'package:datta_devsthan_pimpalgaon/screen/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 import 'auth_gate.dart';
 import 'firebase_options.dart';
