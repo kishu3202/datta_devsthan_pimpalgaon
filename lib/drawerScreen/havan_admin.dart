@@ -32,13 +32,23 @@ class _HavanBookingAdminScreenState extends State<HavanBookingAdminScreen> {
         itemBuilder: (context, snapshot) {
           Map<String, dynamic> appointment = snapshot.data();
           final String name = appointment['name'];
-          final Timestamp date = appointment['date'];
-          final String slot = appointment['slot'];
+          final int year = appointment['schedule'];
+          final int day = appointment['day'];
+          final int slot = appointment['slot'];
           final String telephone = appointment['telephone'];
           final String address = appointment['address'];
+
+          // to calculte date from day of year and year
+          // ref: https://stackoverflow.com/questions/60282195/how-to-get-date-given-only-the-day-of-year-number-in-flutter
+          final dayOfYear = day;
+          final millisInADay = const Duration(days: 1).inMilliseconds; // 86400000
+          final millisDayOfYear = dayOfYear * millisInADay;
+          final millisecondsSinceEpoch = DateTime(year).millisecondsSinceEpoch;
+
+          var dayOfYearDate = DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch + millisDayOfYear);
           return ListTile(
             subtitle: Text(
-                'Date: ${DateFormat.yMMMd().format(date.toDate())} slot: $slot contact: $telephone \n $address'),
+                'Date: ${DateFormat('dd/MM/yyyy').format(dayOfYearDate.subtract(const Duration(days: 1)))} slot: $slot contact: $telephone \n$address'),
             title: Text(name),
           );
         },

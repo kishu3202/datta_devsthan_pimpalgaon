@@ -11,7 +11,9 @@ import 'package:intl/intl.dart';
 // Demonstrates how to use autofill hints. The full list of hints is here:
 // https://github.com/flutter/engine/blob/master/lib/web_ui/lib/src/engine/text_editing/autofill_hint.dart
 class HavanBooking extends StatefulWidget {
-  const HavanBooking({super.key});
+  const HavanBooking({super.key, required this.date, required this.slots});
+  final DateTime date;
+  final List slots;
 
   @override
   State<HavanBooking> createState() => _HavanBookingState();
@@ -22,7 +24,9 @@ class _HavanBookingState extends State<HavanBooking> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  String? _date, _slot;
+
+  String? _date ;
+  int? _slot;
   final db = FirebaseFirestore.instance;
 
   @override
@@ -32,11 +36,11 @@ class _HavanBookingState extends State<HavanBooking> {
         title: const Text('Booking Form'),
         actions: [
           TextButton(
-            child: const Text(
-              'Book now',
-              style: TextStyle(color: Colors.black),
+            child:  Text(
+              'Book now for ${DateFormat('dd/MMM/yyyy').format(widget.date)}',
+              style: const TextStyle(color: Colors.black),
             ),
-            onPressed: () {
+            onPressed: () async{
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
                 // If the form is valid, display a snackbar. In the real world,
@@ -45,19 +49,31 @@ class _HavanBookingState extends State<HavanBooking> {
                   "name": _nameController.text,
                   "telephone": _phoneController.text,
                   "address": _addressController.text,
-                  "date": Timestamp.fromDate(DateTime.parse(_date!)),
+
                   "slot": _slot,
-                  "scheduleId":"Hbdx0tXMcdIOERxkAbBh",
+                  "schedule":widget.date.year,
+                  "day": int.parse(DateFormat('D').format(widget.date)),
                 "userId": FirebaseAuth.instance.currentUser!.uid
                 };
 
-                db
+               await db
                     .collection("appointments")
                     .doc()
                     .set(docData)
-                    .onError((e, _) => print("Error writing document: $e"));
+                    .onError((e, _) => print("Error writing document: $e")).then((value) async{
 
-               Navigator.of(context).pop();
+                 final scheduleRef = db.collection("schedules").doc('${widget.date.year}');
+                  scheduleRef.update({
+                   "${int.parse(DateFormat('D').format(widget.date))}" : FieldValue.arrayRemove([_slot]),
+                 });
+                 Navigator.of(context).pop();
+                 Navigator.of(context).pop();
+
+               });
+
+
+
+
               }
             },
           ),
@@ -122,57 +138,56 @@ class _HavanBookingState extends State<HavanBooking> {
                         return null;
                       },
                     ),
-                    DropdownButtonFormField<String>(
-                       value: _date,
-                      hint: const Text("Select date"),
+                    // DropdownButtonFormField<String>(
+                    //    value: _date,
+                    //   hint: const Text("Select date"),
+                    //
+                    //   items: [
+                    //     DropdownMenuItem(
+                    //         value: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                    //         child: Text(
+                    //             DateFormat('yyyy-MM-dd').format(DateTime.now()))),
+                    //     DropdownMenuItem(
+                    //       value: DateFormat('yyyy-MM-dd').format(
+                    //           DateTime.now().add(const Duration(days: 1))),
+                    //       child: Text(DateFormat('yyyy-MM-dd').format(
+                    //           DateTime.now().add(const Duration(days: 1)))),
+                    //     ),
+                    //     DropdownMenuItem(
+                    //         value: DateFormat('yyyy-MM-dd').format(
+                    //             DateTime.now().add(const Duration(days: 2))),
+                    //         child: Text(DateFormat('yyyy-MM-dd').format(
+                    //             DateTime.now().add(const Duration(days: 2)))))
+                    //   ],
+                    //   onChanged: (String? value) {
+                    //     setState(() {
+                    //       _date = value;
+                    //     });
+                    //   },
+                    //   validator: (String? value) {
+                    //     if (value == null) {
+                    //       return 'Please select date';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
+                    //
 
-                      items: [
-                        DropdownMenuItem(
-                            value: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-                            child: Text(
-                                DateFormat('yyyy-MM-dd').format(DateTime.now()))),
-                        DropdownMenuItem(
-                          value: DateFormat.yMMMd().format(
-                              DateTime.now().add(const Duration(days: 1))),
-                          child: Text(DateFormat.yMMMd().format(
-                              DateTime.now().add(const Duration(days: 1)))),
-                        ),
-                        DropdownMenuItem(
-                            value: DateFormat.yMMMd().format(
-                                DateTime.now().add(const Duration(days: 2))),
-                            child: Text(DateFormat.yMMMd().format(
-                                DateTime.now().add(const Duration(days: 2)))))
-                      ],
-                      onChanged: (String? value) {
-                        setState(() {
-                          _date = value;
-                        });
-                      },
-                      validator: (String? value) {
-                        if (value == null) {
-                          return 'Please select date';
-                        }
-                        return null;
-                      },
-                    ),
-                    DropdownButtonFormField<String>(
+                    DropdownButtonFormField<int>(
                       value: _slot,
                       hint: const Text("Select slot"),
 
-                      items: const [
-                        DropdownMenuItem(value: '9', child: Text('9AM')),
-                        DropdownMenuItem(value: '10', child: Text('10AM')),
-                        DropdownMenuItem(value: '11', child: Text('11AM')),
-                        DropdownMenuItem(value: '12', child: Text('12PM')),
-                        DropdownMenuItem(value: '13', child: Text('1PM')),
-                        DropdownMenuItem(value: '14', child: Text('2PM'))
+                      items:  [
+                        for (final slot in widget.slots)
+                        DropdownMenuItem(value: slot, child: Text('$slot')),
+
                       ],
-                      onChanged: (String? value) {
+                      onChanged: (int? value) {
                         setState(() {
                           _slot = value;
                         });
                       },
-                      validator: (String? value) {
+                      validator: (int? value) {
                         if (value == null) {
                           return 'Please select slot';
                         }
