@@ -36,7 +36,7 @@ class _DipdanScreenState extends State<DipdanScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
               child: Container(
                 child: InteractiveViewer(
                     panEnabled: true,
@@ -65,28 +65,37 @@ class _DipdanScreenState extends State<DipdanScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    if (_controller.value.isPlaying) {
-                      _controller.pause();
-                      Wakelock.disable();
-                    } else {
-                      _controller.play();
-                      Wakelock.enable();
-                    }
-                  });
-                },
-              // child: ElevatedButton(onPressed: () {
-              //   setState(() {
-              //     _controller.value.isPlaying
-              //         ? _controller.pause()
-              //         : _controller.play();
-              //   });
-              // },
-              child: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow
+              child: Container(
+                height: 45,
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )),
+                  onPressed: () {
+                    setState(() {
+                      if (_controller.value.isPlaying) {
+                        _controller.pause();
+                        Wakelock.disable();
+                      } else {
+                        _controller.play();
+                        Wakelock.enable();
+                      }
+                    });
+                  },
+                // child: ElevatedButton(onPressed: () {
+                //   setState(() {
+                //     _controller.value.isPlaying
+                //         ? _controller.pause()
+                //         : _controller.play();
+                //   });
+                // },
+                child: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow
+                ),
+                            ),
               ),
-            ),
             ),
           ],
         ),
