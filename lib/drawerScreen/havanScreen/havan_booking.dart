@@ -72,7 +72,7 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
   }
 }
 
-//Date picker
+///Date picker
 
 /// Flutter code sample for.
 
@@ -122,6 +122,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: CustomCalendarDatePicker(
         key: _calendarPickerKey,
         initialDate: DateTime.now(),

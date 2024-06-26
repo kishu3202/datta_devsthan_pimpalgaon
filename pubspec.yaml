@@ -44,6 +44,8 @@ dependencies:
   cloud_firestore: ^4.17.5
   intl: ^0.19.0
   scroll_loop_auto_scroll: ^0.0.5
+  video_player: ^2.2.19
+  just_audio_media_kit: ^2.0.4
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +91,11 @@ flutter:
     - asset/images/namsmaran1.jpeg
     - asset/images/scannerImage.jpeg
     - asset/images/dipdan.jpeg
+    - asset/images/dada.jpg
+    - asset/images/dada1.jpg
+    - asset/images/maharaj.jpg
+    - asset/images/contactImage.jpeg
+    - asset/vedio/dipdaanVedio.mp4
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
