@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wakelock/wakelock.dart';
 
 class DipdanScreen extends StatefulWidget {
   const DipdanScreen({super.key});
@@ -17,10 +18,12 @@ class _DipdanScreenState extends State<DipdanScreen> {
     super.initState();
     _controller  = VideoPlayerController.asset('asset/vedio/dipdaanVedio.mp4');
     _initializeVideoPlayerFuture = _controller.initialize();
+    Wakelock.enable();
   }
   @override
   void dispose(){
     _controller.dispose();
+    Wakelock.disable();
     super.dispose();
   }
 
@@ -35,7 +38,11 @@ class _DipdanScreenState extends State<DipdanScreen> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Container(
-                child: Image(image: AssetImage("asset/images/dipdan.jpeg"),),
+                child: InteractiveViewer(
+                    panEnabled: true,
+                    minScale: 0.5,
+                    maxScale: 4.0,
+                  child: Image(image: AssetImage("asset/images/dipdan.jpeg"),)),
               ),
             ),
             Padding(
@@ -58,13 +65,25 @@ class _DipdanScreenState extends State<DipdanScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(onPressed: () {
-                setState(() {
-                  _controller.value.isPlaying
-                      ? _controller.pause()
-                      : _controller.play();
-                });
-              },
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    if (_controller.value.isPlaying) {
+                      _controller.pause();
+                      Wakelock.disable();
+                    } else {
+                      _controller.play();
+                      Wakelock.enable();
+                    }
+                  });
+                },
+              // child: ElevatedButton(onPressed: () {
+              //   setState(() {
+              //     _controller.value.isPlaying
+              //         ? _controller.pause()
+              //         : _controller.play();
+              //   });
+              // },
               child: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow
               ),
             ),
