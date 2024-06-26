@@ -1,10 +1,10 @@
-
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/dipdan_screen.dart';
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/havanScreen/havan_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import '../drawerScreen/aratiScreen/aratiScreen.dart';
 import '../drawerScreen/contact_screen.dart';
 import '../drawerScreen/donation_screen.dart';
@@ -63,7 +63,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
           // }, icon: Icon(Icons.logout, color: Colors.white,))
         ],
       ),
-      body: const Center(child: Text('Welcome to dashboard'),),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              child: Container(
+                height: 200,
+              child: Image(image: AssetImage('asset/images/login1Image.jpeg'),),
+              ),
+            ),
+          ),
+          Column(
+            children: [
+              Container(
+                height: 40,
+                decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.yellowAccent.shade400.withOpacity(0.9), Colors.orangeAccent.shade400.withOpacity(0.9)], // Define your two colors here
+                  begin: Alignment.topLeft, /// Adjust the gradient's start and end points as needed
+                  end: Alignment.bottomRight,),),
+                child: ScrollLoopAutoScroll(
+                    child: Text(
+                      "|| ओम श्री गुरुदेव दत्त ओम || || ओम नमः शिवाय ओम ||",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                    scrollDirection: Axis.horizontal,
+                    delay: Duration(seconds: 1),
+                    duration: Duration(seconds: 50),
+                    gap: 25,
+                    reverseScroll: false,
+                    duplicateChild: 25,
+                    enableScrollInput: true,
+                    delayAfterScrollInput: Duration(seconds: 1)),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+            child: Column(
+              children: [
+                Text('खूप मोठ्या प्रमाणात दत्त महाराजांच्या आशीर्वादाने कृपेने खूप मोठ्या प्रमाणात कार्य चालू आहे तरी याचा लाभ घ्यावा. त्रासलेले भक्त आहेत त्यांनी पिंपळगाव बुद्रुक येथे येऊन या कार्याचा लाभ घ्यावा. श्री गुरुदेव दत्त धाम पिंपळगाव बुद्रूक ९३०९२७३६१९. श्री गुरुदेव दत्त कुटुंबाचं पाच कोटी केलं नुकसान, कुटुंब केलं उध्वस्त आश्या भक्तांना वाईट शक्तींचा त्रास होतो, त्यांनाच त्या वेदना कळतात. काही लोक म्हणतात हे काय नसत पण ज्याच जळत त्यालाच कळत🙏🏻🙏🏻कुठ्ल्याही प्रकारचा बळी देऊ नये. नरबळी देणे कायद्यानं गुन्हा आहे.  कुटलाही देव पशुबळी, नरबळी मागत नाही. कुठल्याही प्रकारचे उतारे करू नये, अंधश्रध्देच्या बळी पडू नये ही विनंती. वेदिक पुराणानुसार (मंत्र चिकिस्ता) वाईट शक्तीला एकमेव पर्याय होम हवन करणे.  श्रद्धा ठेवा अंधश्रद्धा ठेऊ नका. अवधूत चिंतन श्री गुरुदेव दत्त🙏🏻🙏🏻', style: TextStyle(fontSize: 18),),
+              ],
+            ),
+          ),
+        ],
+      ),
 
       drawer: Drawer(
         backgroundColor: Colors.orange,
