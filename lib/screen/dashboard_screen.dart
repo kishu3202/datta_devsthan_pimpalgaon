@@ -12,6 +12,7 @@ import '../drawerScreen/havan_admin.dart';
 import '../drawerScreen/nityaseva_screen.dart';
 import '../drawerScreen/seva_marge_screen.dart';
 import '../drawerScreen/youtube_screen.dart';
+import 'notification_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -53,14 +54,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             },
           ),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationScreen()));
+              },
               icon: const Icon(
                 Icons.notifications,
                 color: Colors.white,
               )),
-          // IconButton(onPressed: (){
-          //   showMessage(context, 'तुम्हाला खात्री आहे का तुम्ही एप्लिकेशनच्या बाहेर पडत आहात ?');
-          // }, icon: Icon(Icons.logout, color: Colors.white,))
         ],
       ),
       body: Column(
@@ -332,9 +332,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: (){
                       FirebaseUIAuth.signOut(
                         context: context,
-
                       );
-
                     },
                     leading: const Icon(
                       Icons.logout,

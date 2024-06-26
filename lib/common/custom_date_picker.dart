@@ -3,12 +3,9 @@
 // found in the LICENSE file.
 
 import 'dart:math' as math;
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter/material.dart';
-
 import 'custom_calender_date_picker.dart';
 
 // The M3 sizes are coming from the tokens, but are hand coded,
