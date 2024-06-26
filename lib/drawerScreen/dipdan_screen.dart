@@ -10,11 +10,13 @@ class DipdanScreen extends StatefulWidget {
 
 class _DipdanScreenState extends State<DipdanScreen> {
   late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState(){
     super.initState();
     _controller  = VideoPlayerController.asset('asset/vedio/dipdaanVedio.mp4');
+    _initializeVideoPlayerFuture = _controller.initialize();
   }
   @override
   void dispose(){
@@ -44,6 +46,24 @@ class _DipdanScreenState extends State<DipdanScreen> {
                 )
                     : Container(
                   child: Center(child: CircularProgressIndicator()),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                child: FutureBuilder(
+                  future: _initializeVideoPlayerFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
                 ),
               ),
             ),
