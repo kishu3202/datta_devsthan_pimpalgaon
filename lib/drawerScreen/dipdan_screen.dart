@@ -41,17 +41,6 @@ class _DipdanScreenState extends State<DipdanScreen> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Container(
-                child: _controller.value.isInitialized ? AspectRatio(aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-                )
-                    : Container(
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
                 child: FutureBuilder(
                   future: _initializeVideoPlayerFuture,
                   builder: (context, snapshot) {
