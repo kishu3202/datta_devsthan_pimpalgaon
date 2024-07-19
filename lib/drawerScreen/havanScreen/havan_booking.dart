@@ -103,27 +103,46 @@ class _DatePickerExampleState extends State<DatePickerExample> {
 
   final GlobalKey _calendarPickerKey = GlobalKey();
   Map<String, dynamic>? schedule;
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState(){
+    super.initState();
     final docRef = FirebaseFirestore.instance
         .collection("schedules")
         .doc('${DateTime.now().year}');
     docRef.snapshots().listen(
-      (event) {
+          (event) {
         setState(() {
           schedule = event.data() as Map<String, dynamic>;
         });
       },
       onError: (error) => print("Listen failed: $error"),
     );
+
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final docRef = FirebaseFirestore.instance
+  //       .collection("schedules")
+  //       .doc('${DateTime.now().year}');
+  //   docRef.snapshots().listen(
+  //     (event) {
+  //       setState(() {
+  //         schedule = event.data() as Map<String, dynamic>;
+  //       });
+  //     },
+  //     onError: (error) => print("Listen failed: $error"),
+  //   );
+  // }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: CustomCalendarDatePicker(
+      body:(schedule != null && schedule!.isNotEmpty)? CustomCalendarDatePicker(
         key: _calendarPickerKey,
         initialDate: DateTime.now(),
         //initialEntryMode: DatePickerEntryMode.calendarOnly,
@@ -141,10 +160,11 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                   ));
         },
         selectableDayPredicate: (date) {
-          if (schedule != null && schedule!.isNotEmpty) {
+
+          //if (schedule != null && schedule!.isNotEmpty) {
             final dayOfYear = DateFormat('D').format(date);
-            //print(schedule);
-            //print(DateFormat('D').format(date));
+            print(schedule);
+            print(dayOfYear);
             if (schedule!.containsKey(dayOfYear)) {
               final slotsOfDay = schedule![dayOfYear] as List<dynamic>;
               final isNotFull = slotsOfDay.isNotEmpty;
@@ -156,9 +176,9 @@ class _DatePickerExampleState extends State<DatePickerExample> {
             } else {
               return false;
             }
-          }
+         // }
 
-          return false;
+         // return false;
         },
         // key: _calendarPickerKey,
         // initialDate: _selectedDate.value,
@@ -168,7 +188,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
         // onDateChanged: _handleDateChanged,
         // selectableDayPredicate: widget.selectableDayPredicate,
         // initialCalendarMode: widget.initialCalendarMode,
-      ),
+      ):const CircularProgressIndicator(),
       // body: Center(
       //   child: OutlinedButton(
       //     onPressed: () {
