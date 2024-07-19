@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -17,7 +16,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Notification",style: TextStyle(color: Colors.white,fontSize: 18)),
+      appBar: AppBar(title: const Text("Notification",style: TextStyle(color: Colors.white,fontSize: 18)),
         centerTitle: true,
       ),
       body:  FirestoreListView<Map<String, dynamic>>(
