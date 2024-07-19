@@ -91,13 +91,8 @@ void showFlutterNotification(RemoteMessage message) {
   }
 }
 
-/// Initialize the [FlutterLocalNotificationsPlugin] package.
-late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  //update tokens
+//setup tokens
+Future<void> setupToken() async{
   final token = await FirebaseMessaging.instance.getToken();
   if (token != null) {
     print("token $token");
@@ -116,10 +111,21 @@ void main() async {
     }
   }
 
+}
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+
+
+
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (!kIsWeb) {
+    await setupToken();
     await setupFlutterNotifications();
   }
 
