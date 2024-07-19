@@ -96,6 +96,26 @@ late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  //update tokens
+  final token = await FirebaseMessaging.instance.getToken();
+  if (token != null) {
+    print("token $token");
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      bool isFlutterLocalNotificationsInitialized = false;
+
+      //make firestore operation to update token in users collection
+      final db = FirebaseFirestore.instance;
+      final userRef = db.collection("users").doc(user.uid);
+
+// Atomically add a new token to the "deviceTokens" array field.
+      userRef.update({
+        "deviceTokens": FieldValue.arrayUnion([token]),
+      });
+    }
+  }
+
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
