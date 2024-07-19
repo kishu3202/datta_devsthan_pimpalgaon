@@ -73,6 +73,7 @@ void showFlutterNotification(RemoteMessage message) {
   RemoteNotification? notification = message.notification;
   AndroidNotification? android = message.notification?.android;
   if (notification != null && android != null && !kIsWeb) {
+    print("notification receive");
     flutterLocalNotificationsPlugin.show(
       notification.hashCode,
       notification.title,
