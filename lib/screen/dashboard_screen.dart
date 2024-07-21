@@ -1,6 +1,7 @@
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/dipdan_screen.dart';
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/havanScreen/havan_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import '../drawerScreen/havan_admin.dart';
 import '../drawerScreen/nityaseva_screen.dart';
 import '../drawerScreen/seva_marge_screen.dart';
 import '../drawerScreen/youtube_screen.dart';
+import '../main.dart';
 import 'notification_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -24,7 +26,13 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
 
+  @override
+  void initState(){
+    super.initState();
 
+
+    FirebaseMessaging.onMessage.listen(showFlutterNotification);
+  }
   @override
   Widget build(BuildContext context) {
 

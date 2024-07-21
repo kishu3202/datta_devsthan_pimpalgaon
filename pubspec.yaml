@@ -46,7 +46,7 @@ dependencies:
   scroll_loop_auto_scroll: ^0.0.5
   video_player: ^2.2.19
   just_audio_media_kit: ^2.0.4
-  flutter_webview_plugin: ^0.4.0
+  #flutter_webview_plugin: ^0.4.0
   webview_flutter: ^4.8.0
   wakelock: ^0.6.2
   firebase_messaging: ^14.9.4
@@ -62,7 +62,6 @@ flutter_launcher_icons:
     android: "launcher_icon"
 #    ios: true
     image_path: "asset/icon/iconImage.jpeg"
-    min_sdk_android: 21
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

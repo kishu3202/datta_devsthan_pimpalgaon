@@ -98,6 +98,7 @@ Future<void> setupToken() async{
     print("token $token");
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
+      print("user ${user.uid}");
       bool isFlutterLocalNotificationsInitialized = false;
 
       //make firestore operation to update token in users collection
@@ -105,9 +106,9 @@ Future<void> setupToken() async{
       final userRef = db.collection("users").doc(user.uid);
 
 // Atomically add a new token to the "deviceTokens" array field.
-      userRef.update({
+      userRef.set({
         "deviceTokens": FieldValue.arrayUnion([token]),
-      });
+      },SetOptions(merge: true));
     }
   }
 
@@ -125,7 +126,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (!kIsWeb) {
-    await setupToken();
+    //await setupToken();
     await setupFlutterNotifications();
   }
 

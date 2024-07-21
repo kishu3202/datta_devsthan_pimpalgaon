@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+//import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class YoutubeScreen extends StatefulWidget {
   const YoutubeScreen({super.key});
@@ -9,11 +9,11 @@ class YoutubeScreen extends StatefulWidget {
 }
 
 class _YoutubeScreenState extends State<YoutubeScreen> {
-  final flutterWebViewPlugin = FlutterWebviewPlugin();
+  //final flutterWebViewPlugin = FlutterWebviewPlugin();
 
   @override
   void dispose() {
-    flutterWebViewPlugin.dispose();
+    //flutterWebViewPlugin.dispose();
     super.dispose();
   }
 
@@ -27,15 +27,15 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
         ),
         centerTitle: true,
       ),
-      body: WebviewScaffold(
-        url: "https://www.youtube.com/@ShriGurudevDattaDhamTrust",
-        withZoom: true,
-        withLocalStorage: true,
-        hidden: true,
-        initialChild: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+      // body: WebviewScaffold(
+      //   url: "https://www.youtube.com/@ShriGurudevDattaDhamTrust",
+      //   withZoom: true,
+      //   withLocalStorage: true,
+      //   hidden: true,
+      //   initialChild: Center(
+      //     child: CircularProgressIndicator(),
+      //   ),
+      // ),
     );
   }
 }
