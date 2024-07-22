@@ -92,18 +92,14 @@ void showFlutterNotification(RemoteMessage message) {
   }
 }
 
-/// Initialize the [FlutterLocalNotificationsPlugin] package.
-late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  //update tokens
+//setup tokens
+Future<void> setupToken() async{
   final token = await FirebaseMessaging.instance.getToken();
   if (token != null) {
     print("token $token");
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
+      print("user ${user.uid}");
       bool isFlutterLocalNotificationsInitialized = false;
 
       //make firestore operation to update token in users collection
@@ -111,16 +107,27 @@ void main() async {
       final userRef = db.collection("users").doc(user.uid);
 
 // Atomically add a new token to the "deviceTokens" array field.
-      userRef.update({
+      userRef.set({
         "deviceTokens": FieldValue.arrayUnion([token]),
-      });
+      },SetOptions(merge: true));
     }
   }
+
+}
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+
+
 
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (!kIsWeb) {
+    //await setupToken();
     await setupFlutterNotifications();
   }
 

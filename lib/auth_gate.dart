@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'main.dart';
 import 'screen/dashboard_screen.dart';
 
 
@@ -21,6 +22,7 @@ class AuthGate extends StatelessWidget {
           );
 
         }
+        setupToken();
         return const DashboardScreen();
         //return const HavanBookingScreen();
       },

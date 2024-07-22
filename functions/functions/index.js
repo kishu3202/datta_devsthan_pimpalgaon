@@ -43,7 +43,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 exports.createappointment = functions.firestore
-    .document('appointments/{appointmentId')
+    .document('appointments/{appointmentId}')
     .onCreate( async(snap, context) => {
       // Get an object representing the document
       // e.g. {'name': 'Marie', 'age': 66}
@@ -65,23 +65,39 @@ exports.createappointment = functions.firestore
       
     
     
-       // get tokens
-       const userRef = db.collection('users').doc(userId);
-       const doc = await userRef.get();
-       if (!doc.exists) {
-       console.log('No such document!');
-       return;
-       } else {
-       console.log('Document data:', doc.data());
-      }
-      const registrationTokens = doc.data().deviceTokens;
+       // get all admins tokens
+       const adminsRef = admin.firestore().collection('users');
+       const adminSnapshot = await adminsRef.where('isAdmin', '==', true).get();
+       if (adminSnapshot.empty) {
+         console.log('No matching documents.');
+         return;
+       }
+       const registrationTokens = new Set();
+       adminSnapshot.forEach(doc => {
+         console.log(doc.id, '=>', doc.data());
+         doc.data().deviceTokens.forEach(token => {
+                 registrationTokens.add(token);
+           });
+       });
+
+//       const userRef = db.collection('users').doc(userId);
+//       const doc = await userRef.get();
+//       if (!doc.exists) {
+//       console.log('No such document!');
+//       return;
+//       } else {
+//       console.log('Document data:', doc.data());
+//      }
+//      const registrationTokens = doc.data().deviceTokens;
+
+
       
       const message = {
         data: { message: 'new appointment request by '+data.name, appointmentId: context.params.appointmentId},
-        tokens: registrationTokens,
+        tokens: Array.from(registrationTokens),
       };
         //send notification
-      getMessaging().sendMulticast(message)
+      admin.messaging().sendMulticast(message)
         .then((response) => {
           console.log(response.successCount + ' messages were sent successfully');
         });
@@ -89,12 +105,12 @@ exports.createappointment = functions.firestore
         const notification = {
           message: 'new appointment request by '+data.name,
           date: new Date(),
-          isRead: flase,
+          isRead: false,
           appointmentId:context.params.appointmentId 
         };
         
         // Add a new document in collection "cities" with ID 'LA'
-         db.collection('notifications').doc().set(notification);
+         admin.firestore().collection('notifications').doc().set(notification);
 
     });
   
