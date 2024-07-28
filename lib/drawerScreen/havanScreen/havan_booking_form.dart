@@ -42,9 +42,7 @@ class _HavanBookingState extends State<HavanBooking> {
       appBar: AppBar(
         title: const Text('Booking Form', style: TextStyle(color: Colors.white, fontSize: 18)),
         centerTitle: true,
-        actions: const [
-
-        ],
+        actions: const [],
       ),
       body: Column(
         children: [
@@ -74,7 +72,6 @@ class _HavanBookingState extends State<HavanBooking> {
                             return null;
                           },
                         ),
-
                         TextFormField(
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
@@ -107,8 +104,6 @@ class _HavanBookingState extends State<HavanBooking> {
                             return null;
                           },
                         ),
-
-
                         DropdownButtonFormField<int>(
                           value: _slot,
                           hint: const Text("Select slot"),
