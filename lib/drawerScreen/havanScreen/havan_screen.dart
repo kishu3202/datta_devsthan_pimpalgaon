@@ -18,7 +18,7 @@ class _HavanScreenState extends State<HavanScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            child: Container(height: 80,
+            child: SizedBox(height: 80,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -46,7 +46,7 @@ class _HavanScreenState extends State<HavanScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Container(height: 80,
+            child: SizedBox(height: 80,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

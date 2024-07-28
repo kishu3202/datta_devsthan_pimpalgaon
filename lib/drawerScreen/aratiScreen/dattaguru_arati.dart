@@ -1,6 +1,5 @@
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/aratiScreen/devi_arati.dart';
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/aratiScreen/prathana.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DattaguruArati extends StatefulWidget {
@@ -14,7 +13,7 @@ class _DattaguruAratiState extends State<DattaguruArati> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
+      appBar: AppBar(title: const Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
         centerTitle: true,
       ),
       body: Padding(
@@ -24,24 +23,24 @@ class _DattaguruAratiState extends State<DattaguruArati> {
             Container(
               child: Row(
                 children: [
-                  SizedBox(width: 20,),
+                  const SizedBox(width: 20,),
                   IconButton(onPressed: (){
                     Navigator.pop(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DeviArati(
+                            builder: (context) => const DeviArati(
                             )));
-                  }, icon: Icon(Icons.keyboard_double_arrow_left), color: Colors.white,iconSize: 30),
-                  SizedBox(width: 50,),
-                  Text("श्री दत्तात्रेयांची आरती", style: TextStyle(fontSize: 18, color: Colors.white)),
-                  SizedBox(width: 60,),
+                  }, icon: const Icon(Icons.keyboard_double_arrow_left), color: Colors.white,iconSize: 30),
+                  const SizedBox(width: 50,),
+                  const Text("श्री दत्तात्रेयांची आरती", style: TextStyle(fontSize: 18, color: Colors.white)),
+                  const SizedBox(width: 60,),
                   IconButton(onPressed: (){
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PrathanaScreen(
+                            builder: (context) => const PrathanaScreen(
                             )));
-                  }, icon: Icon(Icons.keyboard_double_arrow_right), color: Colors.white,iconSize: 30)
+                  }, icon: const Icon(Icons.keyboard_double_arrow_right), color: Colors.white,iconSize: 30)
                 ],
               ),
               height: 45,
@@ -53,8 +52,8 @@ class _DattaguruAratiState extends State<DattaguruArati> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            SizedBox(height: 30,),
-            Column(
+            const SizedBox(height: 30,),
+            const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

@@ -1,6 +1,5 @@
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/aratiScreen/dattaguru_arati.dart';
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/aratiScreen/ganpati_arati.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DeviArati extends StatefulWidget {
@@ -14,7 +13,7 @@ class _DeviAratiState extends State<DeviArati> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
+        appBar: AppBar(title: const Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
           centerTitle: true,
         ),
         body: Padding(
@@ -22,28 +21,6 @@ class _DeviAratiState extends State<DeviArati> {
           child: Column(
             children: [
               Container(
-                child: Row(
-                  children: [
-                    SizedBox(width: 20,),
-                    IconButton(onPressed: (){
-                      Navigator.pop(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GanpatiArati(
-                              )));
-                    }, icon: Icon(Icons.keyboard_double_arrow_left), color: Colors.white,iconSize: 30),
-                    SizedBox(width: 60,),
-                    Text("श्री देवीची आरती", style: TextStyle(fontSize: 18, color: Colors.white)),
-                    SizedBox(width: 80,),
-                    IconButton(onPressed: (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DattaguruArati(
-                              )));
-                    }, icon: Icon(Icons.keyboard_double_arrow_right), color: Colors.white,iconSize: 30)
-                  ],
-                ),
                 height: 45,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -52,9 +29,31 @@ class _DeviAratiState extends State<DeviArati> {
                     end: Alignment.bottomRight,),
                   borderRadius: BorderRadius.circular(10),
                 ),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 20,),
+                    IconButton(onPressed: (){
+                      Navigator.pop(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const GanpatiArati(
+                              )));
+                    }, icon: const Icon(Icons.keyboard_double_arrow_left), color: Colors.white,iconSize: 30),
+                    const SizedBox(width: 60,),
+                    const Text("श्री देवीची आरती", style: TextStyle(fontSize: 18, color: Colors.white)),
+                    const SizedBox(width: 80,),
+                    IconButton(onPressed: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DattaguruArati(
+                              )));
+                    }, icon: const Icon(Icons.keyboard_double_arrow_right), color: Colors.white,iconSize: 30)
+                  ],
+                ),
               ),
-              SizedBox(height: 50,),
-              Column(
+              const SizedBox(height: 50,),
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

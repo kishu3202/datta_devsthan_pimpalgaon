@@ -5,7 +5,6 @@ import 'main.dart';
 import 'screen/dashboard_screen.dart';
 
 
-
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 

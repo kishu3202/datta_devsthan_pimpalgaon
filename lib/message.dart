@@ -153,11 +153,12 @@ class MessageView extends StatelessWidget {
                         ]
                       ],
                     ),
-                  )
-                ]
+                  ),
+                ],
               ],
             ),
-          )),
+          ),
+      ),
     );
   }
 }

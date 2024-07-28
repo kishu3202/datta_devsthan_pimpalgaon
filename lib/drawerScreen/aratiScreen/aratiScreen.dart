@@ -16,14 +16,14 @@ class _AratiScreenState extends State<AratiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
+        title: const Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
         centerTitle: true,
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Container(height: 80,
+            child: SizedBox(height: 80,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -35,14 +35,14 @@ class _AratiScreenState extends State<AratiScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => GanpatiArati(
+                            builder: (context) => const GanpatiArati(
                             )));
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Center(
-                        child: const Text(
+                        child: Text(
                           "श्री गणपतीची आरती",
                           style: TextStyle(
                             color: Colors.orange, // Set the text color
@@ -56,7 +56,7 @@ class _AratiScreenState extends State<AratiScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Container(height: 80,
+            child: SizedBox(height: 80,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -68,14 +68,14 @@ class _AratiScreenState extends State<AratiScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DeviArati(
+                            builder: (context) => const DeviArati(
                             )));
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Center(
-                        child: const Text(
+                        child: Text(
                           "श्री देवीची आरती",
                           style: TextStyle(
                             color: Colors.orange, // Set the text color
@@ -89,7 +89,7 @@ class _AratiScreenState extends State<AratiScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Container(height: 80,
+            child: SizedBox(height: 80,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -101,13 +101,13 @@ class _AratiScreenState extends State<AratiScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DattaguruArati(
+                            builder: (context) => const DattaguruArati(
                             )));
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "श्री दत्तात्रेयांची आरती",
                         style: TextStyle(
                           color: Colors.orange, // Set the text color
@@ -120,7 +120,7 @@ class _AratiScreenState extends State<AratiScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Container(height: 80,
+            child: SizedBox(height: 80,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -132,14 +132,14 @@ class _AratiScreenState extends State<AratiScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PrathanaScreen(
+                            builder: (context) => const PrathanaScreen(
                             )));
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Center(
-                        child: const Text(
+                        child: Text(
                           "प्रार्थना",
                           style: TextStyle(
                             color: Colors.orange, // Set the text color

@@ -12,7 +12,7 @@ class _PrathanaScreenState extends State<PrathanaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
+        appBar: AppBar(title: const Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
           centerTitle: true,
         ),
         body: Padding(
@@ -20,18 +20,25 @@ class _PrathanaScreenState extends State<PrathanaScreen> {
           child: Column(
             children: [
               Container(
+                height: 45,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.yellowAccent.shade400.withOpacity(0.9), Colors.orangeAccent.shade400.withOpacity(0.9)], // Define your two colors here
+                  begin: Alignment.topLeft, // Adjust the gradient's start and end points as needed
+                  end: Alignment.bottomRight,),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: Row(
                   children: [
-                    SizedBox(width: 20,),
+                    const SizedBox(width: 20,),
                     IconButton(onPressed: (){
                       Navigator.pop(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DattaguruArati(
+                              builder: (context) => const DattaguruArati(
                               )));
-                    }, icon: Icon(Icons.keyboard_double_arrow_left), color: Colors.white,iconSize: 30),
-                    SizedBox(width: 100,),
-                    Text("प्रार्थना", style: TextStyle(fontSize: 18, color: Colors.white)),
+                    }, icon: const Icon(Icons.keyboard_double_arrow_left), color: Colors.white,iconSize: 30),
+                    const SizedBox(width: 100,),
+                    const Text("प्रार्थना", style: TextStyle(fontSize: 18, color: Colors.white)),
                     // SizedBox(width: 110,),
                     // IconButton(onPressed: (){
                     //   Navigator.push(
@@ -42,16 +49,9 @@ class _PrathanaScreenState extends State<PrathanaScreen> {
                     // }, icon: Icon(Icons.keyboard_double_arrow_right), color: Colors.white,iconSize: 30)
                   ],
                 ),
-                height: 45,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.yellowAccent.shade400.withOpacity(0.9), Colors.orangeAccent.shade400.withOpacity(0.9)], // Define your two colors here
-                  begin: Alignment.topLeft, // Adjust the gradient's start and end points as needed
-                  end: Alignment.bottomRight,),
-                  borderRadius: BorderRadius.circular(10),
-                ),
               ),
-              SizedBox(height: 30,),
-              Column(
+              const SizedBox(height: 30,),
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

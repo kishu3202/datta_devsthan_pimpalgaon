@@ -2562,7 +2562,7 @@ class _DayItemState extends State<_DayItem> {
       return getProperty(datePickerTheme) ?? getProperty(defaults);
     }
 
-    T? resolve<T>(MaterialStateProperty<T>? Function(DatePickerThemeData? theme) getProperty, Set<MaterialState> states) {
+    T? resolve<T>(WidgetStateProperty<T>? Function(DatePickerThemeData? theme) getProperty, Set<MaterialState> states) {
       return effectiveValue(
             (DatePickerThemeData? theme) {
           return getProperty(theme)?.resolve(states);

@@ -30,42 +30,38 @@ class _DipdanScreenState extends State<DipdanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("दीपदान",style: TextStyle(color: Colors.white,fontSize: 18),),
+      appBar: AppBar(title: const Text("दीपदान",style: TextStyle(color: Colors.white,fontSize: 18),),
       centerTitle: true,),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-              child: Container(
-                child: InteractiveViewer(
-                    panEnabled: true,
-                    minScale: 0.5,
-                    maxScale: 4.0,
-                  child: Image(image: AssetImage("asset/images/dipdan.jpeg"),)),
+              child: InteractiveViewer(
+                  panEnabled: true,
+                  minScale: 0.5,
+                  maxScale: 4.0,
+                child: const Image(image: AssetImage("asset/images/dipdan.jpeg"),)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: FutureBuilder(
+                future: _initializeVideoPlayerFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: VideoPlayer(_controller),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Container(
-                child: FutureBuilder(
-                  future: _initializeVideoPlayerFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: VideoPlayer(_controller),
-                      );
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
+              child: SizedBox(
                 height: 45,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(

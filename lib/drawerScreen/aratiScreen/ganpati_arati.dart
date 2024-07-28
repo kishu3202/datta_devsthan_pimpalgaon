@@ -13,7 +13,7 @@ class _GanpatiAratiState extends State<GanpatiArati> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
+        appBar: AppBar(title: const Text("आरती संग्रह",style: TextStyle(color: Colors.white,fontSize: 18),),
           centerTitle: true,
         ),
         body: Padding(
@@ -21,26 +21,6 @@ class _GanpatiAratiState extends State<GanpatiArati> {
           child: Column(
             children: [
               Container(
-                child: Row(
-                  children: [
-                    SizedBox(width: 20,),
-                    IconButton(onPressed: (){ Navigator.pop(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AratiScreen(
-                            )));}, icon: Icon(Icons.keyboard_double_arrow_left), color: Colors.white,iconSize: 30),
-                    SizedBox(width: 50,),
-                    Text("श्री गणपतीची आरती", style: TextStyle(fontSize: 18, color: Colors.white)),
-                    SizedBox(width: 65,),
-                    IconButton(onPressed: (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DeviArati(
-                              )));
-                    }, icon: Icon(Icons.keyboard_double_arrow_right), color: Colors.white, iconSize: 30,)
-                  ],
-                ),
                 height: 45,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -49,9 +29,29 @@ class _GanpatiAratiState extends State<GanpatiArati> {
                     end: Alignment.bottomRight,),
                   borderRadius: BorderRadius.circular(10),
                 ),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 20,),
+                    IconButton(onPressed: (){ Navigator.pop(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AratiScreen(
+                            )));}, icon: const Icon(Icons.keyboard_double_arrow_left), color: Colors.white,iconSize: 30),
+                    const SizedBox(width: 50,),
+                    const Text("श्री गणपतीची आरती", style: TextStyle(fontSize: 18, color: Colors.white)),
+                    const SizedBox(width: 65,),
+                    IconButton(onPressed: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DeviArati(
+                              )));
+                    }, icon: const Icon(Icons.keyboard_double_arrow_right), color: Colors.white, iconSize: 30,)
+                  ],
+                ),
               ),
-              SizedBox(height: 50,),
-              Column(
+              const SizedBox(height: 50,),
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

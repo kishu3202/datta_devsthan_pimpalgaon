@@ -1,9 +1,9 @@
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/dipdan_screen.dart';
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/havanScreen/havan_screen.dart';
+import 'package:datta_devsthan_pimpalgaon/drawerScreen/profile_screen1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import '../drawerScreen/aratiScreen/aratiScreen.dart';
@@ -45,6 +45,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         centerTitle: true,
         actions: [
           IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationScreen()));
+              },
+              icon: const Icon(
+                Icons.notifications,
+                color: Colors.white,
+              )),
+          IconButton(
             icon: const Icon(Icons.person, color: Colors.white),
             onPressed: () {
               Navigator.push(
@@ -61,14 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               );
             },
           ),
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationScreen()));
-              },
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.white,
-              )),
+
         ],
       ),
       body: SingleChildScrollView(
@@ -76,10 +77,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
+            const Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: SizedBox(
                   height: 200,
                 width: 300,
                 // width: MediaQuery.of(context).size.width,
@@ -87,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Column(
               children: [
                 Container(
@@ -95,11 +96,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.yellowAccent.shade400.withOpacity(0.9), Colors.orangeAccent.shade400.withOpacity(0.9)], // Define your two colors here
                     begin: Alignment.topLeft, /// Adjust the gradient's start and end points as needed
                     end: Alignment.bottomRight,),),
-                  child: ScrollLoopAutoScroll(
-                      child: Text(
-                        "|| ओम श्री गुरुदेव दत्त ओम || || ओम नमः शिवाय ओम ||",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
+                  child: const ScrollLoopAutoScroll(
+                      child: Text("|| ओम श्री गुरुदेव दत्त ओम || || ओम नमः शिवाय ओम ||", style: TextStyle(fontSize: 18, color: Colors.white)),
                       scrollDirection: Axis.horizontal,
                       delay: Duration(seconds: 1),
                       duration: Duration(seconds: 50),
@@ -111,11 +109,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 12),
               child: Column(
                 children: [
-                  Text('खूप मोठ्या प्रमाणात दत्त महाराजांच्या आशीर्वादाने कृपेने खूप मोठ्या प्रमाणात कार्य चालू आहे तरी याचा लाभ घ्यावा. त्रासलेले भक्त आहेत त्यांनी पिंपळगाव बुद्रुक येथे येऊन या कार्याचा लाभ घ्यावा. श्री गुरुदेव दत्त धाम पिंपळगाव बुद्रूक ९३०९२७३६१९. श्री गुरुदेव दत्त कुटुंबाचं पाच कोटी केलं नुकसान, कुटुंब केलं उध्वस्त आश्या भक्तांना वाईट शक्तींचा त्रास होतो, त्यांनाच त्या वेदना कळतात. काही लोक म्हणतात हे काय नसत पण ज्याच जळत त्यालाच कळत🙏🏻🙏🏻कुठ्ल्याही प्रकारचा बळी देऊ नये. नरबळी देणे कायद्यानं गुन्हा आहे.  कुटलाही देव पशुबळी, नरबळी मागत नाही. कुठल्याही प्रकारचे उतारे करू नये, अंधश्रध्देच्या बळी पडू नये ही विनंती. वेदिक पुराणानुसार (मंत्र चिकिस्ता) वाईट शक्तीला एकमेव पर्याय होम हवन करणे.  श्रद्धा ठेवा अंधश्रद्धा ठेऊ नका. अवधूत चिंतन श्री गुरुदेव दत्त🙏🏻🙏🏻', style: TextStyle(fontSize: 18, color: Colors.orange),),
+                  Text('     खूप मोठ्या प्रमाणात दत्त महाराजांच्या आशीर्वादाने कृपेने खूप मोठ्या प्रमाणात कार्य चालू आहे तरी याचा लाभ घ्यावा. त्रासलेले भक्त आहेत त्यांनी पिंपळगाव बुद्रुक येथे येऊन या कार्याचा लाभ घ्यावा. श्री गुरुदेव दत्त धाम पिंपळगाव बुद्रूक ९३०९२७३६१९. श्री गुरुदेव दत्त कुटुंबाचं पाच कोटी केलं नुकसान, कुटुंब केलं उध्वस्त आश्या भक्तांना वाईट शक्तींचा त्रास होतो, त्यांनाच त्या वेदना कळतात. काही लोक म्हणतात हे काय नसत पण ज्याच जळत त्यालाच कळत🙏🏻🙏🏻कुठ्ल्याही प्रकारचा बळी देऊ नये. नरबळी देणे कायद्यानं गुन्हा आहे.  कुटलाही देव पशुबळी, नरबळी मागत नाही. कुठल्याही प्रकारचे उतारे करू नये, अंधश्रध्देच्या बळी पडू नये ही विनंती. वेदिक पुराणानुसार (मंत्र चिकिस्ता) वाईट शक्तीला एकमेव पर्याय होम हवन करणे.  श्रद्धा ठेवा अंधश्रद्धा ठेऊ नका. अवधूत चिंतन श्री गुरुदेव दत्त🙏🏻🙏🏻', style: TextStyle(fontSize: 16, color: Colors.orange),),
                 ],
               ),
             ),
@@ -148,6 +146,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
               color: Colors.orange,
               child: Column(
                 children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfileScreen1()),
+                      );
+                    },
+                    child: const ListTile(
+                      leading: Icon(
+                        Icons.person_outline,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Profile',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.push(

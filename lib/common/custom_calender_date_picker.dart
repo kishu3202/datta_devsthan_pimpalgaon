@@ -995,7 +995,7 @@ class _Day extends StatefulWidget {
 }
 
 class _DayState extends State<_Day> {
-  final MaterialStatesController _statesController = MaterialStatesController();
+  final WidgetStatesController _statesController = MaterialStatesController();
 
   @override
   Widget build(BuildContext context) {

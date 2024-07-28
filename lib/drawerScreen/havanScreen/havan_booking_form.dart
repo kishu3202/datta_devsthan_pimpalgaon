@@ -4,7 +4,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -35,7 +34,7 @@ class _HavanBookingState extends State<HavanBooking> {
       appBar: AppBar(
         title: const Text('Booking Form', style: TextStyle(color: Colors.white, fontSize: 18)),
         centerTitle: true,
-        actions: [
+        actions: const [
 
         ],
       ),
@@ -92,7 +91,7 @@ class _HavanBookingState extends State<HavanBooking> {
                             hintText: '123 4th Ave',
                             labelText: 'Address',
                           ),
-                          autofillHints: [AutofillHints.streetAddressLine1],
+                          autofillHints: const [AutofillHints.streetAddressLine1],
                           validator: (String? value) {
                             if (value == '') {
                               return 'Please enter address';
@@ -201,13 +200,9 @@ class _HavanBookingState extends State<HavanBooking> {
               height: 50,
               width: MediaQuery.sizeOf(context).width,
               child: TextButton(
-                child:  Text(
-                  'Book now for ${DateFormat('dd/MMM/yyyy').format(widget.date)}',
-                  style: const TextStyle(color: Colors.white,fontSize: 16),
-                ),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.orange, // Button background color
-                  padding: EdgeInsets.all(16.0), // Button padding
+                  padding: const EdgeInsets.all(16.0), // Button padding
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0), // Rounded corners
                   ),
@@ -243,6 +238,10 @@ class _HavanBookingState extends State<HavanBooking> {
                     });
                   }
                 },
+                child:  Text(
+                  'Book now for ${DateFormat('dd/MMM/yyyy').format(widget.date)}',
+                  style: const TextStyle(color: Colors.white,fontSize: 16),
+                ),
               ),
             ),
           ),
