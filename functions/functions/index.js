@@ -59,12 +59,12 @@ exports.createappointment = functions.firestore
           return;
       }
       const data = snap.data();
-  
+
       // access a particular field as you would any JS property
       const userId = data.userId;
-      
-    
-    
+
+
+
        // get all admins tokens
        const adminsRef = admin.firestore().collection('users');
        const adminSnapshot = await adminsRef.where('isAdmin', '==', true).get();
@@ -72,45 +72,41 @@ exports.createappointment = functions.firestore
          console.log('No matching documents.');
          return;
        }
-       const registrationTokens = new Set();
+       const registrationTokens = [];
        adminSnapshot.forEach(doc => {
          console.log(doc.id, '=>', doc.data());
          doc.data().deviceTokens.forEach(token => {
-                 registrationTokens.add(token);
+                 registrationTokens.push(token);
            });
        });
 
-//       const userRef = db.collection('users').doc(userId);
-//       const doc = await userRef.get();
-//       if (!doc.exists) {
-//       console.log('No such document!');
-//       return;
-//       } else {
-//       console.log('Document data:', doc.data());
-//      }
-//      const registrationTokens = doc.data().deviceTokens;
 
 
-      
-      const message = {
-        data: { message: 'new appointment request by '+data.name, appointmentId: context.params.appointmentId},
-        tokens: Array.from(registrationTokens),
-      };
-        //send notification
-      admin.messaging().sendMulticast(message)
-        .then((response) => {
-          console.log(response.successCount + ' messages were sent successfully');
-        });
+       const payload = {
+            notification: {
+              title: "new appointment request",
+              body: "new appointment request by "+data.name, appointmentId: context.params.appointmentId,
+//              icon: snapshot.data().profilePicUrl || '/images/profile_placeholder.png',
+//              click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+            }};
+             if (registrationTokens.length > 0) {
+                  // Send notifications to all tokens.
+                  const response = await admin.messaging().sendToDevice(registrationTokens, payload);
+                  await cleanupTokens(response, registrationTokens);
+                  functions.logger.log('Notifications have been sent and tokens cleaned up.');
+                }
+
+
 
         const notification = {
           message: 'new appointment request by '+data.name,
           date: new Date(),
           isRead: false,
-          appointmentId:context.params.appointmentId 
+          appointmentId:context.params.appointmentId
         };
-        
+
         // Add a new document in collection "cities" with ID 'LA'
-         admin.firestore().collection('notifications').doc().set(notification);
+        await admin.firestore().collection('notifications').doc().set(notification);
 
     });
-  
+

@@ -83,7 +83,7 @@ class DatePickerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  const DatePickerExample(restorationId: 'main');
+    return const DatePickerExample(restorationId: 'main');
   }
 }
 
@@ -102,23 +102,22 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   // the [StatefulWidget]'s constructor.
 
   final GlobalKey _calendarPickerKey = GlobalKey();
-  Map<String, dynamic>? schedule;
+  Map<String, dynamic> schedule = {};
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     final docRef = FirebaseFirestore.instance
         .collection("schedules")
         .doc('${DateTime.now().year}');
     docRef.snapshots().listen(
-          (event) {
+      (event) {
         setState(() {
           schedule = event.data() as Map<String, dynamic>;
         });
       },
       onError: (error) => print("Listen failed: $error"),
     );
-
   }
 
   // @override
@@ -137,68 +136,108 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   //   );
   // }
 
-
   @override
   Widget build(BuildContext context) {
+    final currentDayOfYear = DateFormat('D').format(DateTime.now());
+    final scheduleDays = schedule.keys.map((e) => int.parse(e)).toList();
+    DateTime? initialDate;
+
+    scheduleDays.sort();
+    if (scheduleDays.isNotEmpty) {
+      for (var i = 0; i < scheduleDays.length; i++) {
+        if (scheduleDays[i] == int.parse(currentDayOfYear)) {
+          final slotsOfDay = schedule['${scheduleDays[i]}'] as List<dynamic>;
+          final currentHour = DateFormat('H').format(DateTime.now());
+
+          var isNotExpired = false;
+          for (var element in slotsOfDay) {
+            if (element >= int.parse(currentHour)) {
+              isNotExpired = true;
+              break;
+            }
+          }
+          if (isNotExpired) {
+            initialDate = DateTime(DateTime.now().year, 1, 1)
+                .add(Duration(days: scheduleDays[i] - 1));
+
+            print("initial date 1:");
+            print(initialDate);
+            break;
+          }
+        }
+        if (scheduleDays[i] > int.parse(currentDayOfYear)) {
+          initialDate = DateTime(DateTime.now().year, 1, 1)
+              .add(Duration(days: scheduleDays[i] - 1));
+          print("initial date 2:");
+          print(initialDate);
+          break;
+        }
+      }
+    }
     return Scaffold(
       appBar: AppBar(),
-      body:(schedule != null && schedule!.isNotEmpty)? CustomCalendarDatePicker(
-        key: _calendarPickerKey,
-        initialDate: DateTime.now(),
-        //initialEntryMode: DatePickerEntryMode.calendarOnly,
-        //initialDate:  DateTime.now() ,
-        firstDate: DateTime.now(),
-        lastDate: DateTime.now().add(const Duration(days: 365)),
-        onDateChanged: (date) {
-          print(date);
-          final dayOfYear = DateFormat('D').format(date);
-          final slots=schedule![dayOfYear] as List<dynamic>;
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>  HavanBooking(date: date,slots:slots,)
-                  ));
-        },
-        selectableDayPredicate: (date) {
+      body: (schedule.isNotEmpty && initialDate != null)
+          ? CustomCalendarDatePicker(
+              key: _calendarPickerKey,
+              initialDate: initialDate,
+              firstDate: initialDate,
+              lastDate: initialDate.add(const Duration(days: 365)),
+              onDateChanged: (date) {
+                print(date);
+                final dayOfYear = DateFormat('D').format(date);
+                final slots = schedule[dayOfYear] as List<dynamic>;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HavanBooking(
+                              date: date,
+                              slots: slots,
+                            )));
+              },
+              selectableDayPredicate: (date) {
+                //if (schedule != null && schedule!.isNotEmpty) {
+                final dayOfYear = int.parse(DateFormat('D').format(date));
+                final currentDay =
+                    int.parse(DateFormat('D').format(DateTime.now()));
+                print('dayOfYear');
+                print(dayOfYear);
+                print('currentDay');
+                print(currentDay);
+                if (schedule.containsKey("$dayOfYear")) {
+                  final slotsOfDay = schedule[dayOfYear] ;
+                  final currentHour = DateFormat('H').format(DateTime.now());
+                  var isNotExpired = false;
+                  if (dayOfYear == currentDay) {
+                    for (var element in slotsOfDay) {
+                      if (element >= int.parse(currentHour)) {
+                        return true;
+                      }
+                    }
+                  } else if (dayOfYear > currentDay) {
+                    return true;
+                  }
+                  //final isNotFull = slotsOfDay.isNotEmpty;
 
-          //if (schedule != null && schedule!.isNotEmpty) {
-            final dayOfYear = DateFormat('D').format(date);
-            print(schedule);
-            print(dayOfYear);
-            if (schedule!.containsKey(dayOfYear)) {
-              final slotsOfDay = schedule![dayOfYear] as List<dynamic>;
-              final isNotFull = slotsOfDay.isNotEmpty;
-              if (isNotFull) {
-                return true;
-              } else {
-                return false;
-              }
-            } else {
-              return false;
-            }
-         // }
+                  return false;
+                } else {
+                  return false;
+                }
+                // }
 
-         // return false;
-        },
-        // key: _calendarPickerKey,
-        // initialDate: _selectedDate.value,
-        // firstDate: widget.firstDate,
-        // lastDate: widget.lastDate,
-        // currentDate: widget.currentDate,
-        // onDateChanged: _handleDateChanged,
-        // selectableDayPredicate: widget.selectableDayPredicate,
-        // initialCalendarMode: widget.initialCalendarMode,
-      ):const CircularProgressIndicator(),
-      // body: Center(
-      //   child: OutlinedButton(
-      //     onPressed: () {
-      //       _restorableDatePickerRouteFuture.present();
-      //     },
-      //     child:
-      //
-      //     const Text('Choose your Date'),
-      //   ),
-      // ),
+                // return false;
+              },
+              // key: _calendarPickerKey,
+              // initialDate: _selectedDate.value,
+              // firstDate: widget.firstDate,
+              // lastDate: widget.lastDate,
+              // currentDate: widget.currentDate,
+              // onDateChanged: _handleDateChanged,
+              // selectableDayPredicate: widget.selectableDayPredicate,
+              // initialCalendarMode: widget.initialCalendarMode,
+            )
+          : const Center(
+              child: Text('sorry!!! no schedule available'),
+            ),
     );
   }
 }

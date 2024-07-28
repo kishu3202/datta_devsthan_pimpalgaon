@@ -31,6 +31,14 @@ class _HavanBookingState extends State<HavanBooking> {
 
   @override
   Widget build(BuildContext context) {
+    final availableSlots=[];
+    final currentHour = DateFormat('H').format(DateTime.now());
+    for(final slot in widget.slots){
+      if(slot>=int.parse(currentHour)){
+        availableSlots.add(slot);
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Booking Form', style: TextStyle(color: Colors.white, fontSize: 18)),
@@ -100,47 +108,14 @@ class _HavanBookingState extends State<HavanBooking> {
                             return null;
                           },
                         ),
-                        // DropdownButtonFormField<String>(
-                        //    value: _date,
-                        //   hint: const Text("Select date"),
-                        //
-                        //   items: [
-                        //     DropdownMenuItem(
-                        //         value: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-                        //         child: Text(
-                        //             DateFormat('yyyy-MM-dd').format(DateTime.now()))),
-                        //     DropdownMenuItem(
-                        //       value: DateFormat('yyyy-MM-dd').format(
-                        //           DateTime.now().add(const Duration(days: 1))),
-                        //       child: Text(DateFormat('yyyy-MM-dd').format(
-                        //           DateTime.now().add(const Duration(days: 1)))),
-                        //     ),
-                        //     DropdownMenuItem(
-                        //         value: DateFormat('yyyy-MM-dd').format(
-                        //             DateTime.now().add(const Duration(days: 2))),
-                        //         child: Text(DateFormat('yyyy-MM-dd').format(
-                        //             DateTime.now().add(const Duration(days: 2)))))
-                        //   ],
-                        //   onChanged: (String? value) {
-                        //     setState(() {
-                        //       _date = value;
-                        //     });
-                        //   },
-                        //   validator: (String? value) {
-                        //     if (value == null) {
-                        //       return 'Please select date';
-                        //     }
-                        //     return null;
-                        //   },
-                        // ),
-                        //
+
 
                         DropdownButtonFormField<int>(
                           value: _slot,
                           hint: const Text("Select slot"),
 
                           items:  [
-                            for (final slot in widget.slots)
+                            for (final slot in availableSlots)
                             DropdownMenuItem(value: slot, child: Text('$slot')),
 
                           ],
@@ -156,31 +131,7 @@ class _HavanBookingState extends State<HavanBooking> {
                             return null;
                           },
                         )
-                        // const TextField(
-                        //   keyboardType: TextInputType.number,
-                        //   textInputAction: TextInputAction.next,
-                        //   decoration: InputDecoration(
-                        //     hintText: '12345',
-                        //     labelText: 'Postal Code',
-                        //   ),
-                        //   autofillHints: [AutofillHints.postalCode],
-                        // ),
-                        // const TextField(
-                        //   textInputAction: TextInputAction.next,
-                        //   decoration: InputDecoration(
-                        //     hintText: 'United States',
-                        //     labelText: 'Country',
-                        //   ),
-                        //   autofillHints: [AutofillHints.countryName],
-                        // ),
-                        // const TextField(
-                        //   keyboardType: TextInputType.number,
-                        //   decoration: InputDecoration(
-                        //     hintText: '1',
-                        //     labelText: 'Country Code',
-                        //   ),
-                        //   autofillHints: [AutofillHints.countryCode],
-                        // ),
+
                       ].expand(
                         (widget) => [
                           widget,
@@ -201,10 +152,6 @@ class _HavanBookingState extends State<HavanBooking> {
               height: 50,
               width: MediaQuery.sizeOf(context).width,
               child: TextButton(
-                child:  Text(
-                  'Book now for ${DateFormat('dd/MMM/yyyy').format(widget.date)}',
-                  style: const TextStyle(color: Colors.white,fontSize: 16),
-                ),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.orange, // Button background color
                   padding: EdgeInsets.all(16.0), // Button padding
@@ -243,6 +190,10 @@ class _HavanBookingState extends State<HavanBooking> {
                     });
                   }
                 },
+                child:  Text(
+                  'Book now for ${DateFormat('dd/MMM/yyyy').format(widget.date)}',
+                  style: const TextStyle(color: Colors.white,fontSize: 16),
+                ),
               ),
             ),
           ),
