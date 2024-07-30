@@ -84,8 +84,8 @@ exports.createappointment = functions.firestore
 
        const payload = {
             notification: {
-              title: "new appointment request",
-              body: "new appointment request by "+data.name, appointmentId: context.params.appointmentId,
+              title: "new appointment booked",
+              body: "new appointment booked by "+data.name, appointmentId: context.params.appointmentId,
 //              icon: snapshot.data().profilePicUrl || '/images/profile_placeholder.png',
 //              click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
             }};
@@ -99,10 +99,11 @@ exports.createappointment = functions.firestore
 
 
         const notification = {
-          message: 'new appointment request by '+data.name,
+          message: 'new appointment booked by '+data.name,
           date: new Date(),
           isRead: false,
-          appointmentId:context.params.appointmentId
+          appointmentId:context.params.appointmentId,
+          isAdmin: true
         };
 
         // Add a new document in collection "cities" with ID 'LA'
@@ -110,3 +111,77 @@ exports.createappointment = functions.firestore
 
     });
 
+exports.updateappointment = functions.firestore
+    .document('appointments/{appointmentId}')
+    .onUpdate( async(snap, context) => {
+      // Get an object representing the document
+      // e.g. {'name': 'Marie', 'age': 66}
+      //const newValue = snap.data();
+
+      // access a particular field as you would any JS property
+      //const name = newValue.name;
+
+      // perform desired operations ...
+      //const snapshot = event.data;
+      if (!snap) {
+          console.log("No data associated with the event");
+          return;
+      }
+      const data = snap.after.data();
+      const previousData = snap.before.data();
+
+      // access a particular field as you would any JS property
+      const userId = data.userId;
+
+      const previousStatus=previousData.status;
+      const newStatus=data.status;
+      if(previousStatus==newStatus){
+      return;
+      }
+
+       // get all user tokens
+       const adminsRef = admin.firestore().collection('users').doc(userId);
+       const adminSnapshot = await adminsRef.get();
+       if (adminSnapshot.empty) {
+         console.log('No matching documents.');
+         return;
+       }
+       const registrationTokens = [];
+       adminSnapshot.forEach(doc => {
+         console.log(doc.id, '=>', doc.data());
+         doc.data().deviceTokens.forEach(token => {
+                 registrationTokens.push(token);
+           });
+       });
+
+
+
+       const payload = {
+            notification: {
+              title: "Appointment "+newStatus,
+              body: "Appointment by "+data.name, appointmentId: context.params.appointmentId+" is "+newStatus,
+//              icon: snapshot.data().profilePicUrl || '/images/profile_placeholder.png',
+//              click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+            }};
+             if (registrationTokens.length > 0) {
+                  // Send notifications to all tokens.
+                  const response = await admin.messaging().sendToDevice(registrationTokens, payload);
+                  await cleanupTokens(response, registrationTokens);
+                  functions.logger.log('Notifications have been sent and tokens cleaned up.');
+                }
+
+
+
+        const notification = {
+          message: 'Appointment '+newStatus,
+          date: new Date(),
+          isRead: false,
+          appointmentId:context.params.appointmentId,
+          isAdmin: false,
+          userId:userId
+        };
+
+        // Add a new document in collection "cities" with ID 'LA'
+        await admin.firestore().collection('notifications').doc().set(notification);
+
+    });

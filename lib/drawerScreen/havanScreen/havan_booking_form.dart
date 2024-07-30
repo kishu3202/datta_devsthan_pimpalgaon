@@ -11,9 +11,10 @@ import 'package:intl/intl.dart';
 // Demonstrates how to use autofill hints. The full list of hints is here:
 // https://github.com/flutter/engine/blob/master/lib/web_ui/lib/src/engine/text_editing/autofill_hint.dart
 class HavanBooking extends StatefulWidget {
-  const HavanBooking({super.key, required this.date, required this.slots});
+  const HavanBooking({super.key, required this.date, required this.slots, required this.dayOfYear});
   final DateTime date;
   final List slots;
+  final String dayOfYear;
 
   @override
   State<HavanBooking> createState() => _HavanBookingState();
@@ -25,27 +26,67 @@ class _HavanBookingState extends State<HavanBooking> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
-  String? _date ;
+  String? _date;
   int? _slot;
   final db = FirebaseFirestore.instance;
+  final auth=FirebaseAuth.instance;
+
+
+  Map<String, dynamic> bookedSchedule = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    final bookedScheduleRef = FirebaseFirestore.instance
+        .collection("schedules_booked")
+        .doc('${DateTime.now().year}');
+    bookedScheduleRef.snapshots().listen(
+          (event) {
+        setState(() {
+          bookedSchedule = event.data() as Map<String, dynamic>;
+        });
+      },
+      onError: (error) => print("Listen failed: $error"),
+    );
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final availableSlots=[];
+
+    final availableSlots = [];
+    final currentDayOfYear=DateFormat('D').format(DateTime.now());
     final currentHour = DateFormat('H').format(DateTime.now());
-    for(final slot in widget.slots){
-      if(slot>=int.parse(currentHour)){
+    if(widget.dayOfYear==currentDayOfYear){
+      for (final slot in widget.slots) {
+        if (slot >= int.parse(currentHour)+1)/*keep offset of 1 hour*/ {
+          availableSlots.add(slot);
+        }
+      }
+    }
+    else if (int.parse(widget.dayOfYear)>int.parse(currentDayOfYear)){
+      for (final slot in widget.slots) {
         availableSlots.add(slot);
+      }
+    }
+
+
+
+    final bookedSlots=bookedSchedule[widget.dayOfYear]??[];
+    for(final slot in bookedSlots){
+      if(availableSlots.contains(slot)){
+        availableSlots.remove(slot);
       }
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Booking Form', style: TextStyle(color: Colors.white, fontSize: 18)),
+        title: const Text('Booking Form',
+            style: TextStyle(color: Colors.white, fontSize: 18)),
         centerTitle: true,
-        actions: [
-
-        ],
+        actions: [],
       ),
       body: Column(
         children: [
@@ -109,15 +150,13 @@ class _HavanBookingState extends State<HavanBooking> {
                           },
                         ),
 
-
                         DropdownButtonFormField<int>(
                           value: _slot,
                           hint: const Text("Select slot"),
-
-                          items:  [
+                          items: [
                             for (final slot in availableSlots)
-                            DropdownMenuItem(value: slot, child: Text('$slot')),
-
+                              DropdownMenuItem(
+                                  value: slot, child: Text('$slot')),
                           ],
                           onChanged: (int? value) {
                             setState(() {
@@ -131,7 +170,6 @@ class _HavanBookingState extends State<HavanBooking> {
                             return null;
                           },
                         )
-
                       ].expand(
                         (widget) => [
                           widget,
@@ -159,7 +197,7 @@ class _HavanBookingState extends State<HavanBooking> {
                     borderRadius: BorderRadius.circular(8.0), // Rounded corners
                   ),
                 ),
-                onPressed: () async{
+                onPressed: () async {
                   // Validate returns true if the form is valid, or false otherwise.
                   if (_formKey.currentState!.validate()) {
                     // If the form is valid, display a snackbar. In the real world,
@@ -168,31 +206,42 @@ class _HavanBookingState extends State<HavanBooking> {
                       "name": _nameController.text,
                       "telephone": _phoneController.text,
                       "address": _addressController.text,
-
                       "slot": _slot,
-                      "schedule":widget.date.year,
+                      "schedule": widget.date.year,
                       "day": int.parse(DateFormat('D').format(widget.date)),
-                      "userId": FirebaseAuth.instance.currentUser!.uid
+                      "userId": FirebaseAuth.instance.currentUser!.uid,
+                      "status":"Booked",
+                      "createdOn": Timestamp.now(),
+                      "bookingDate":Timestamp.fromDate(DateTime( widget.date.year,1,1).add(Duration(days: int.parse(DateFormat('D').format(widget.date))-1,hours:_slot! )))
+
                     };
 
                     await db
-                        .collection("appointments")
+                        .collection("users/${auth.currentUser!.uid}/appointments")
                         .doc()
                         .set(docData)
-                        .onError((e, _) => print("Error writing document: $e")).then((value) async{
-
-                      final scheduleRef = db.collection("schedules").doc('${widget.date.year}');
+                        .onError((e, _) => print("Error writing document: $e"))
+                        .then((value) async {
+                      // Add schedules in schedules_booking collection
+                      final scheduleRef =
+                          db.collection("schedules_booked").doc('${widget.date.year}');
                       scheduleRef.update({
-                        "${int.parse(DateFormat('D').format(widget.date))}" : FieldValue.arrayRemove([_slot]),
+                        "${int.parse(DateFormat('D').format(widget.date))}":
+                            FieldValue.arrayUnion([_slot]),
                       });
+
+
+
+
+                      // take user to booking page
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     });
                   }
                 },
-                child:  Text(
+                child: Text(
                   'Book now for ${DateFormat('dd/MMM/yyyy').format(widget.date)}',
-                  style: const TextStyle(color: Colors.white,fontSize: 16),
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),

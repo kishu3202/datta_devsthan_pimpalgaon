@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/dipdan_screen.dart';
 import 'package:datta_devsthan_pimpalgaon/drawerScreen/havanScreen/havan_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ import '../drawerScreen/contact_screen.dart';
 import '../drawerScreen/donation_screen.dart';
 import '../drawerScreen/havan_admin.dart';
 import '../drawerScreen/nityaseva_screen.dart';
+import '../drawerScreen/schedules_admin.dart';
 import '../drawerScreen/seva_marge_screen.dart';
 import '../drawerScreen/youtube_screen.dart';
 import '../main.dart';
@@ -25,6 +27,10 @@ class DashboardScreen extends StatefulWidget {
 
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final db = FirebaseFirestore.instance;
+  final auth=FirebaseAuth.instance;
+  bool isAdmin=false;
+
 
   @override
   void initState(){
@@ -32,6 +38,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
+
+    //check if user is an admin
+    final userRef = db.collection("users").doc(auth.currentUser!.uid);
+    userRef.get().then(
+          (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        if (data["isAdmin"]==true){
+          setState(() {
+            isAdmin=true;
+          });
+        }
+        // ...
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
+
   }
   @override
   Widget build(BuildContext context) {
@@ -63,7 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationScreen(isAdmin: isAdmin,)));
               },
               icon: const Icon(
                 Icons.notifications,
@@ -258,11 +280,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const YoutubeScreen()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) =>  YoutubeScreen()),
+                      // );
                     },
                     child: const ListTile(
                       leading: Icon(
@@ -313,7 +335,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  if(FirebaseAuth.instance.currentUser!.email=='guruaugust@gmail.com')
+                  if(isAdmin)
                   InkWell(
                     onTap: () {
                       Navigator.push(
@@ -329,6 +351,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       title: Text(
                         'हवन बुकिंग (Admin)',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  if(isAdmin)
+
+                    InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SchedulesAdminScreen()),
+                      );
+                    },
+                    child: const ListTile(
+                      leading: Icon(
+                        Icons.list_alt,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Schedules (Admin)',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     ),

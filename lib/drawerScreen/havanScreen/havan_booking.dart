@@ -18,8 +18,12 @@ class HavanBookingScreen extends StatefulWidget {
 
 class _HavanBookingScreenState extends State<HavanBookingScreen> {
   final usersQuery = FirebaseFirestore.instance
-      .collection('appointments')
-      .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid);
+      .collection('users/${FirebaseAuth.instance.currentUser!.uid}/appointments')
+
+      .orderBy("bookingDate", descending: true);
+      // .orderBy("schedule", descending: true)
+      // .orderBy("day", descending: true)
+      // .orderBy("slot");
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +44,23 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
           final int day = appointment['day'];
 
           final int slot = appointment['slot'];
+          final String status=appointment['status']??'Booked';
           // to calculate date from day of year and year
           // ref: https://stackoverflow.com/questions/60282195/how-to-get-date-given-only-the-day-of-year-number-in-flutter
-          final dayOfYear = day;
-          final millisInADay =
-              const Duration(days: 1).inMilliseconds; // 86400000
-          final millisDayOfYear = dayOfYear * millisInADay;
-          final millisecondsSinceEpoch = DateTime(year).millisecondsSinceEpoch;
-          final dayOfYearDate = DateTime.fromMillisecondsSinceEpoch(
-              millisecondsSinceEpoch + millisDayOfYear);
+          //final dayOfYear = day;
+          // final millisInADay =
+          //     const Duration(days: 1).inMilliseconds; // 86400000
+          // final millisDayOfYear = dayOfYear * millisInADay;
+          // final millisecondsSinceEpoch = DateTime(year).millisecondsSinceEpoch;
+          // final dayOfYearDate = DateTime.fromMillisecondsSinceEpoch(
+          //     millisecondsSinceEpoch + millisDayOfYear);
 
+          var date = DateTime(year, 1, 1).add(Duration(days: day - 1));
           return ListTile(
             subtitle: Text(
-                'Date: ${DateFormat('dd/MM/yyyy').format(dayOfYearDate.subtract(const Duration(days: 1)))} slot: $slot'),
+                'Date: ${DateFormat('dd/MM/yyyy').format(date)} ($day) slot: $slot'),
             title: Text(name),
+            trailing: Text(status),
           );
         },
       ),
@@ -191,7 +198,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                     MaterialPageRoute(
                         builder: (context) => HavanBooking(
                               date: date,
-                              slots: slots,
+                              slots: slots, dayOfYear: dayOfYear,
                             )));
               },
               selectableDayPredicate: (date) {
@@ -204,9 +211,9 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                 print('currentDay');
                 print(currentDay);
                 if (schedule.containsKey("$dayOfYear")) {
-                  final slotsOfDay = schedule[dayOfYear] ;
+                  final slotsOfDay = schedule["$dayOfYear"];
                   final currentHour = DateFormat('H').format(DateTime.now());
-                  var isNotExpired = false;
+
                   if (dayOfYear == currentDay) {
                     for (var element in slotsOfDay) {
                       if (element >= int.parse(currentHour)) {
