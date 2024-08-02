@@ -4,6 +4,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -42,7 +43,9 @@ class _HavanBookingState extends State<HavanBooking> {
       appBar: AppBar(
         title: const Text('Booking Form', style: TextStyle(color: Colors.white, fontSize: 18)),
         centerTitle: true,
-        actions: const [],
+        actions: [
+
+        ],
       ),
       body: Column(
         children: [
@@ -72,6 +75,7 @@ class _HavanBookingState extends State<HavanBooking> {
                             return null;
                           },
                         ),
+
                         TextFormField(
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
@@ -96,7 +100,7 @@ class _HavanBookingState extends State<HavanBooking> {
                             hintText: '123 4th Ave',
                             labelText: 'Address',
                           ),
-                          autofillHints: const [AutofillHints.streetAddressLine1],
+                          autofillHints: [AutofillHints.streetAddressLine1],
                           validator: (String? value) {
                             if (value == '') {
                               return 'Please enter address';
@@ -104,6 +108,8 @@ class _HavanBookingState extends State<HavanBooking> {
                             return null;
                           },
                         ),
+
+
                         DropdownButtonFormField<int>(
                           value: _slot,
                           hint: const Text("Select slot"),
@@ -148,7 +154,7 @@ class _HavanBookingState extends State<HavanBooking> {
               child: TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.orange, // Button background color
-                  padding: const EdgeInsets.all(16.0), // Button padding
+                  padding: EdgeInsets.all(16.0), // Button padding
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0), // Rounded corners
                   ),

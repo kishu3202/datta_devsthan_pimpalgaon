@@ -21,7 +21,7 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "YouTube",
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
