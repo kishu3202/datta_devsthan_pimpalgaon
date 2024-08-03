@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 // Demonstrates how to use autofill hints. The full list of hints is here:
 // https://github.com/flutter/engine/blob/master/lib/web_ui/lib/src/engine/text_editing/autofill_hint.dart
 class HavanBooking extends StatefulWidget {
-  const HavanBooking({super.key, required this.date, required this.slots});
+  const HavanBooking({super.key, required this.date, required this.slots, required String dayOfYear});
   final DateTime date;
   final List slots;
 

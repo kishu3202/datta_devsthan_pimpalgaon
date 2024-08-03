@@ -3,6 +3,7 @@ import 'package:datta_devsthan_pimpalgaon/drawerScreen/havanScreen/havan_screen.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import '../drawerScreen/aratiScreen/aratiScreen.dart';
@@ -62,7 +63,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  NotificationScreen(isAdmin:)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationScreen()));
               },
               icon: const Icon(
                 Icons.notifications,
