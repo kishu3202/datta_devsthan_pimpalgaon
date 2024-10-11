@@ -42,7 +42,7 @@ dependencies:
   firebase_ui_auth: ^1.15.0
   firebase_ui_firestore: ^1.6.4
   cloud_firestore: ^5.1.0
-  intl: ^0.18.1
+  intl: ^0.19.0
   scroll_loop_auto_scroll: ^0.0.5
   video_player: ^2.2.19
   just_audio_media_kit: ^2.0.4
@@ -51,6 +51,7 @@ dependencies:
   wakelock: ^0.6.2
   firebase_messaging: ^15.0.3
   flutter_local_notifications: ^17.2.1+2
+  url_launcher: ^6.1.1
 
 
 dev_dependencies:
