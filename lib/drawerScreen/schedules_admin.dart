@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:datta_devsthan_pimpalgaon/drawerScreen/schedules_slots_admin.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../../common/custom_calender_date_picker.dart';
 
 import 'schedules_dates_admin.dart';
 
@@ -12,6 +15,7 @@ class SchedulesAdminScreen extends StatefulWidget {
 }
 
 class _SchedulesAdminScreenState extends State<SchedulesAdminScreen> {
+  final GlobalKey _calendarPickerKey = GlobalKey();
   final usersQuery = FirebaseFirestore.instance.collection('schedules');
   @override
   Widget build(BuildContext context) {
@@ -21,29 +25,31 @@ class _SchedulesAdminScreenState extends State<SchedulesAdminScreen> {
             style: TextStyle(color: Colors.white, fontSize: 18)),
         centerTitle: true,
       ),
-      body: FirestoreListView<Map<String, dynamic>>(
-        emptyBuilder: (context) => const Text('You have no schedules'),
-        query: usersQuery,
-        itemBuilder: (context, snapshot) {
-          Map<String, dynamic> appointment = snapshot.data();
+      body: CustomCalendarDatePicker(
+        key: _calendarPickerKey,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2024),
+        lastDate: DateTime.now().add(const Duration(days: 365)),
+        onDateChanged: (date) {
+          //print(date);
+         final year= date.year;
 
-          final year = int.parse(snapshot.id);
-
-          return InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>  SchedulesDatesAdminScreen(
-                          year: year,
-                        )),
-              );
-            },
-            child: ListTile(
-              title: Text('$year'),
-            ),
-          );
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>  SchedulesSlotsAdminScreen(
+                    date: DateFormat('dd/MMM/yyyy').format(date), day:  int.parse(DateFormat('D').format(date)), year: year,
+                  )));
         },
+
+        // key: _calendarPickerKey,
+        // initialDate: _selectedDate.value,
+        // firstDate: widget.firstDate,
+        // lastDate: widget.lastDate,
+        // currentDate: widget.currentDate,
+        // onDateChanged: _handleDateChanged,
+        // selectableDayPredicate: widget.selectableDayPredicate,
+        // initialCalendarMode: widget.initialCalendarMode,
       ),
     );
   }

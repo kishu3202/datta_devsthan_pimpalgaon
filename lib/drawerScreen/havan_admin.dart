@@ -43,6 +43,7 @@ class _HavanBookingAdminScreenState extends State<HavanBookingAdminScreen> {
           final String telephone = appointment['telephone'];
           final String address = appointment['address'];
           final String status = appointment['status'] ?? 'Cancel';
+          final String userId = appointment['userId'];
 
           // to calculte date from day of year and year
           // ref: https://stackoverflow.com/questions/60282195/how-to-get-date-given-only-the-day-of-year-number-in-flutter
@@ -64,7 +65,7 @@ class _HavanBookingAdminScreenState extends State<HavanBookingAdminScreen> {
                 }
                 else if (status=="Booked"){
                   final appointmentRef =
-                  db.collection("users/${FirebaseAuth.instance.currentUser!.uid}/appointments").doc(appointmentId);
+                  db.collection("users/$userId/appointments").doc(appointmentId);
                   appointmentRef.update({
                     "status": "Cancelled",
                   });

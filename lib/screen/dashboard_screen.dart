@@ -17,7 +17,7 @@ import '../drawerScreen/seva_marge_screen.dart';
 import '../drawerScreen/youtube_screen.dart';
 import '../main.dart';
 import 'notification_screen.dart';
-import 'package:url_launcher/link.dart';
+//import 'package:url_launcher/link.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -265,7 +265,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DipdanScreen()),
+                        MaterialPageRoute(builder: (context) =>  DipdanScreen()),
                       );
                     },
                     child: const ListTile(

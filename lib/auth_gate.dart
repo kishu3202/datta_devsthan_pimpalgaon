@@ -17,6 +17,19 @@ class AuthGate extends StatelessWidget {
           print ("helloo");
 
           return  SignInScreen(
+            headerBuilder: (context, constraints, num){
+              return  Padding(
+                padding: const EdgeInsets.only(top:25.0),
+                child: ClipRRect(
+                  child: Image.asset(
+                    "asset/images/loginImage.jpeg",
+                    height: 100,
+                    width: 100,
+                  ),
+                  // borderRadius: BorderRadius.circular(30),
+                ),
+              );
+            },
             providers: [EmailAuthProvider(),],
           );
 

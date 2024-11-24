@@ -116,7 +116,7 @@ class _HavanBookingState extends State<HavanBooking> {
 
                           items:  [
                             for (final slot in availableSlots)
-                            DropdownMenuItem(value: slot, child: Text('$slot')),
+                            DropdownMenuItem(value: slot, child: Text("$slot ${slot<12?"am":slot==12?"noon":"pm"}"),),
 
                           ],
                           onChanged: (int? value) {
@@ -168,23 +168,32 @@ class _HavanBookingState extends State<HavanBooking> {
                       "name": _nameController.text,
                       "telephone": _phoneController.text,
                       "address": _addressController.text,
-
+                      "bookingDate": Timestamp.fromDate(widget.date),
+                      "createdOn": FieldValue.serverTimestamp(),
+                      "status": "Booked",
                       "slot": _slot,
                       "schedule":widget.date.year,
                       "day": int.parse(DateFormat('D').format(widget.date)),
                       "userId": FirebaseAuth.instance.currentUser!.uid
                     };
 
-                    await db
-                        .collection("appointments")
+                     db
+                        .collection('users/${FirebaseAuth.instance.currentUser!.uid}/appointments')
                         .doc()
                         .set(docData)
                         .onError((e, _) => print("Error writing document: $e")).then((value) async{
 
                       final scheduleRef = db.collection("schedules").doc('${widget.date.year}');
-                      scheduleRef.update({
+                       scheduleRef.update({
                         "${int.parse(DateFormat('D').format(widget.date))}" : FieldValue.arrayRemove([_slot]),
                       });
+
+                      final bookedScheduleRef = db
+                          .collection("schedules_booked")
+                          .doc('${widget.date.year}');
+                       bookedScheduleRef.set({
+                        DateFormat('D').format(widget.date): FieldValue.arrayUnion([_slot]),
+                      },SetOptions(merge: true));
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     });

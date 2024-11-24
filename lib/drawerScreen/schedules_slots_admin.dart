@@ -65,37 +65,37 @@ class _SchedulesSlotsAdminScreenState extends State<SchedulesSlotsAdminScreen> {
             for (int i = 1; i <= 23; i++)
               if (bookedSlots.contains(i))
                 ListTile(
-                  title: Text("$i"),
+                  title: Text("$i ${i<12?"am":i==12?"noon":"pm"}"),
                   subtitle: const Text("Booked"),
                 )
               else if (slots.contains(i))
                 ListTile(
-                  title: Text("$i"),
+                  title: Text("$i ${i<12?"am":i==12?"noon":"pm"}"),
                   subtitle: const Text("Scheduled"),
                   trailing: TextButton(
                     onPressed: () {
                       final scheduleRef = db
                           .collection("schedules")
                           .doc('${widget.year}');
-                      scheduleRef.update({
+                      scheduleRef.set({
                         "${widget.day}": FieldValue.arrayRemove([i]),
-                      });
+                      },SetOptions(merge: true));
                     },
                     child: const Text("UnSchedule"),
                   ),
                 )
               else
                 ListTile(
-                  title: Text("$i"),
+                  title: Text("$i ${i<12?"am":i==12?"noon":"pm"}"),
                   subtitle: const Text("Unscheduled"),
                   trailing: TextButton(
                     onPressed: () {
                       final scheduleRef = db
                           .collection("schedules")
                           .doc('${widget.year}');
-                      scheduleRef.update({
+                      scheduleRef.set({
                         "${widget.day}": FieldValue.arrayUnion([i]),
-                      });
+                      },SetOptions(merge: true));
                     },
                     child: const Text("Schedule"),
                   ),
