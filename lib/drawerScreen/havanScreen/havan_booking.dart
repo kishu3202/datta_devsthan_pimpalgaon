@@ -56,7 +56,7 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
           var date = DateTime(year, 1, 1).add(Duration(days: day - 1));
           return ListTile(
             subtitle: Text(
-                'Date: ${DateFormat('dd/MM/yyyy').format(date)} ($day) slot: $slot'),
+                'Date: ${DateFormat('dd/MM/yyyy').format(date)} ($day) slot: ${slot<12?"$slot am":slot==12?"$slot noon":"${slot-12} pm"} '),
             title: Text(name),
             trailing: Text(status),
           );
@@ -117,9 +117,11 @@ class _DatePickerExampleState extends State<DatePickerExample> {
         .doc('${DateTime.now().year}');
     docRef.snapshots().listen(
       (event) {
-        setState(() {
+        if(mounted) {
+          setState(() {
           schedule = event.data() as Map<String, dynamic>;
         });
+        }
       },
       onError: (error) => print("Listen failed: $error"),
     );

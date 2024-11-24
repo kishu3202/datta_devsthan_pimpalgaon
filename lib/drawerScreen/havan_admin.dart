@@ -56,7 +56,7 @@ class _HavanBookingAdminScreenState extends State<HavanBookingAdminScreen> {
           var date = DateTime(year, 1, 1).add(Duration(days: day - 1));
           return ListTile(
             subtitle: Text(
-                'Date: ${DateFormat('dd/MM/yyyy').format(date)} ($day) slot: $slot contact: $telephone \n$address'),
+                'Date: ${DateFormat('dd/MM/yyyy').format(date)} ($day) slot: ${slot<12?"$slot am":slot==12?"$slot noon":"${slot-12} pm"} contact: $telephone \n$address'),
             title: Text(name),
             trailing: TextButton(
               onPressed: () {
@@ -70,10 +70,16 @@ class _HavanBookingAdminScreenState extends State<HavanBookingAdminScreen> {
                     "status": "Cancelled",
                   });
 
-                  final scheduleRef =
+                  final bookedscheduleRef =
                   db.collection("schedules_booked").doc('$year');
-                  scheduleRef.update({
+                  bookedscheduleRef.update({
                     "$day": FieldValue.arrayRemove([slot]),
+                  });
+
+                  final scheduleRef =
+                  db.collection("schedules").doc('$year');
+                  scheduleRef.update({
+                    "$day": FieldValue.arrayUnion([slot]),
                   });
                 }
 

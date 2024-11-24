@@ -65,12 +65,12 @@ class _SchedulesSlotsAdminScreenState extends State<SchedulesSlotsAdminScreen> {
             for (int i = 1; i <= 23; i++)
               if (bookedSlots.contains(i))
                 ListTile(
-                  title: Text("$i ${i<12?"am":i==12?"noon":"pm"}"),
+                  title: Text(i<12?"$i am":i==12?"$i noon":"${i-12} pm"),
                   subtitle: const Text("Booked"),
                 )
               else if (slots.contains(i))
                 ListTile(
-                  title: Text("$i ${i<12?"am":i==12?"noon":"pm"}"),
+                  title: Text(i<12?"$i am":i==12?"$i noon":"${i-12} pm"),
                   subtitle: const Text("Scheduled"),
                   trailing: TextButton(
                     onPressed: () {
@@ -86,7 +86,7 @@ class _SchedulesSlotsAdminScreenState extends State<SchedulesSlotsAdminScreen> {
                 )
               else
                 ListTile(
-                  title: Text("$i ${i<12?"am":i==12?"noon":"pm"}"),
+                  title: Text(i<12?"$i am":i==12?"$i noon":"${i-12} pm"),
                   subtitle: const Text("Unscheduled"),
                   trailing: TextButton(
                     onPressed: () {

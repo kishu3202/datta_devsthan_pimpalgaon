@@ -116,7 +116,7 @@ class _HavanBookingState extends State<HavanBooking> {
 
                           items:  [
                             for (final slot in availableSlots)
-                            DropdownMenuItem(value: slot, child: Text("$slot ${slot<12?"am":slot==12?"noon":"pm"}"),),
+                            DropdownMenuItem(value: slot, child: Text(slot<12?"$slot am":slot==12?"$slot noon":"${slot-12} pm"),),
 
                           ],
                           onChanged: (int? value) {
@@ -185,7 +185,7 @@ class _HavanBookingState extends State<HavanBooking> {
 
                       final scheduleRef = db.collection("schedules").doc('${widget.date.year}');
                        scheduleRef.update({
-                        "${int.parse(DateFormat('D').format(widget.date))}" : FieldValue.arrayRemove([_slot]),
+                         DateFormat('D').format(widget.date) : FieldValue.arrayRemove([_slot]),
                       });
 
                       final bookedScheduleRef = db
