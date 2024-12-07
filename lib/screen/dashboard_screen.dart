@@ -73,12 +73,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute<ProfileScreen>(
-                  builder: (context) => ProfileScreen(
-                    actions: [
-                      SignedOutAction((context) {
-                        Navigator.of(context).pop();
-                      }),
-                    ],
+                  builder: (context) => Scaffold(
+                    body: ProfileScreen(
+                      actions: [
+                        SignedOutAction((context) {
+                          Navigator.of(context).pop();
+                        }),
+                      ],
+                    ),
                   ),
                 ),
               );

@@ -59,78 +59,192 @@ class _HavanBookingState extends State<HavanBooking> {
                     children: [
                       ...[
                         //const Text('This sample demonstrates autofill. '),
-                        TextFormField(
-                          controller: _nameController,
-                          autofocus: true,
-                          textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            hintText: 'Your name',
-                            labelText: 'First Name',
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white, // Background color
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3), // Shadow color with transparency
+                                blurRadius: 6, // Blur radius for shadow
+                                offset: const Offset(0, 3), // Offset for shadow
+                              ),
+                            ],
                           ),
-                          autofillHints: const [AutofillHints.givenName],
-                          validator: (String? value) {
-                            if (value == '') {
-                              return 'Please enter name';
-                            }
-                            return null;
-                          },
+                          child: TextFormField(
+                            controller: _nameController,
+                            autofocus: true,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding inside the field
+                              hintText: 'नाव',
+                              labelText: 'नाव',
+                              labelStyle: const TextStyle(color: Colors.grey), // Label text style
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Match border radius with the container
+                                borderSide: BorderSide.none, // Remove default border
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded border on focus
+                                borderSide: BorderSide(color: Colors.orangeAccent, width: 2), // Border style on focus
+                              ),
+                            ),
+                            autofillHints: const [AutofillHints.givenName],
+                            validator: (String? value) {
+                              if (value == '') {
+                                return 'कृपया नाव प्रविष्ट करा';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white, // Background color
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3), // Shadow color with transparency
+                                blurRadius: 6, // Blur radius for shadow
+                                offset: const Offset(0, 3), // Offset for shadow
+                              ),
+                            ],
+                          ),
+                          child: TextFormField(
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding inside the field
+                              hintText: '(123) 456-7890',
+                              labelText: 'फोन नंबर',
+                              labelStyle: const TextStyle(color: Colors.grey), // Label text style
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Match border radius with the container
+                                borderSide: BorderSide.none, // Remove default border
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded border on focus
+                                borderSide: BorderSide(color: Colors.green.shade400, width: 2), // Border style on focus
+                              ),
+                            ),
+                            autofillHints: const [AutofillHints.telephoneNumber],
+                            validator: (String? value) {
+                              if (value == '') {
+                                return 'कृपया फोन नंबर प्रविष्ट करा';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white, // Background color
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3), // Shadow color with transparency
+                                blurRadius: 6, // Blur radius for shadow
+                                offset: const Offset(0, 3), // Offset for shadow
+                              ),
+                            ],
+                          ),
+                          child: TextFormField(
+                            controller: _addressController,
+                            keyboardType: TextInputType.streetAddress,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding inside the field
+                              hintText: 'पत्ता',
+                              labelText: 'पत्ता',
+                              labelStyle: const TextStyle(color: Colors.grey), // Label text style
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded border
+                                borderSide: BorderSide.none, // Remove default border
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded border on focus
+                                borderSide: BorderSide(color: Colors.orangeAccent, width: 2), // Blue border when focused
+                              ),
+                            ),
+                            autofillHints: const [AutofillHints.streetAddressLine1],
+                            validator: (String? value) {
+                              if (value == '') {
+                                return 'कृपया पत्ता प्रविष्ट करा';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white, // Background color for the dropdown
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3), // Shadow color with transparency
+                                blurRadius: 6, // Blur radius for shadow
+                                offset: const Offset(0, 3), // Offset for shadow
+                              ),
+                            ],
+                          ),
+                          child: DropdownButtonFormField<int>(
+                            value: _slot,
+                            hint: const Text(
+                              "Select slot",
+                              style: TextStyle(color: Colors.grey), // Hint text style
+                            ),
+                            items: [
+                              for (final slot in availableSlots)
+                                DropdownMenuItem(
+                                  value: slot,
+                                  child: Text(
+                                    slot < 12
+                                        ? "$slot am"
+                                        : slot == 12
+                                        ? "$slot noon"
+                                        : "${slot - 12} pm",
+                                  ),
+                                ),
+                            ],
+                            onChanged: (int? value) {
+                              setState(() {
+                                _slot = value;
+                              });
+                            },
+                            validator: (int? value) {
+                              if (value == null) {
+                                return 'कृपया स्लॉट निवडा';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for dropdown content
+                              filled: true,
+                              fillColor: Colors.white, // Background color for dropdown field
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded border
+                                borderSide: BorderSide.none, // Remove default border
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.orangeAccent, width: 2), // Blue border on focus
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(color: Colors.red, width: 2), // Red border on error
+                              ),
+                              hintStyle: const TextStyle(color: Colors.grey), // Hint style
+                            ),
+                            icon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.grey, // Icon color
+                            ),
+                            dropdownColor: Colors.white, // Background color of the dropdown menu
+                            style: const TextStyle(color: Colors.black, fontSize: 16), // Style for dropdown text
+                          ),
                         ),
 
-                        TextFormField(
-                          controller: _phoneController,
-                          keyboardType: TextInputType.phone,
-                          textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            hintText: '(123) 456-7890',
-                            labelText: 'Telephone',
-                          ),
-                          autofillHints: const [AutofillHints.telephoneNumber],
-                          validator: (String? value) {
-                            if (value == '') {
-                              return 'Please enter phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _addressController,
-                          keyboardType: TextInputType.streetAddress,
-                          textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            hintText: '123 4th Ave',
-                            labelText: 'Address',
-                          ),
-                          autofillHints: [AutofillHints.streetAddressLine1],
-                          validator: (String? value) {
-                            if (value == '') {
-                              return 'Please enter address';
-                            }
-                            return null;
-                          },
-                        ),
-
-
-                        DropdownButtonFormField<int>(
-                          value: _slot,
-                          hint: const Text("Select slot"),
-
-                          items:  [
-                            for (final slot in availableSlots)
-                            DropdownMenuItem(value: slot, child: Text(slot<12?"$slot am":slot==12?"$slot noon":"${slot-12} pm"),),
-
-                          ],
-                          onChanged: (int? value) {
-                            setState(() {
-                              _slot = value;
-                            });
-                          },
-                          validator: (int? value) {
-                            if (value == null) {
-                              return 'Please select slot';
-                            }
-                            return null;
-                          },
-                        )
 
                       ].expand(
                         (widget) => [
@@ -200,7 +314,7 @@ class _HavanBookingState extends State<HavanBooking> {
                   }
                 },
                 child:  Text(
-                  'Book now for ${DateFormat('dd/MMM/yyyy').format(widget.date)}',
+                  '${DateFormat('dd/MMM/yyyy').format(widget.date)} साठी आता बुक करा',
                   style: const TextStyle(color: Colors.white,fontSize: 16),
                 ),
               ),
