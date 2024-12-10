@@ -16,7 +16,7 @@ class HavanBookingScreen extends StatefulWidget {
 
 class _HavanBookingScreenState extends State<HavanBookingScreen> {
   final usersQuery = FirebaseFirestore.instance
-      .collection('users/${FirebaseAuth.instance.currentUser!.uid}/appointments')
+      .collection('trust_users/${FirebaseAuth.instance.currentUser!.uid}/appointments')
       .orderBy("bookingDate", descending: true);
 
   @override

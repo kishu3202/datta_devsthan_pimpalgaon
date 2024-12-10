@@ -292,7 +292,7 @@ class _HavanBookingState extends State<HavanBooking> {
                     };
 
                      db
-                        .collection('users/${FirebaseAuth.instance.currentUser!.uid}/appointments')
+                        .collection('trust_users/${FirebaseAuth.instance.currentUser!.uid}/appointments')
                         .doc()
                         .set(docData)
                         .onError((e, _) => print("Error writing document: $e")).then((value) async{

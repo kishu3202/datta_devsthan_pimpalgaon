@@ -66,7 +66,7 @@ exports.createappointment = functions.firestore
 
 
        // get all admins tokens
-       const adminsRef = admin.firestore().collection('users');
+       const adminsRef = admin.firestore().collection('trust_users');
        const adminSnapshot = await adminsRef.where('isAdmin', '==', true).get();
        if (adminSnapshot.empty) {
          console.log('No matching documents.');
@@ -140,7 +140,7 @@ exports.updateappointment = functions.firestore
       }
 
        // get all user tokens
-       const adminsRef = admin.firestore().collection('users').doc(userId);
+       const adminsRef = admin.firestore().collection('trust_users').doc(userId);
        const adminSnapshot = await adminsRef.get();
        if (adminSnapshot.empty) {
          console.log('No matching documents.');

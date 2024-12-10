@@ -7,6 +7,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
+import '../Login/update_user_form.dart';
 import '../auth_gate.dart';
 import '../drawerScreen/aratiScreen/aratiScreen.dart';
 import '../drawerScreen/contact_screen.dart';
@@ -15,6 +16,7 @@ import '../drawerScreen/havan_admin.dart';
 import '../drawerScreen/nityaseva_screen.dart';
 import '../drawerScreen/schedules_admin.dart';
 import '../drawerScreen/seva_marge_screen.dart';
+import '../drawerScreen/users_admin.dart';
 import '../drawerScreen/youtube_screen.dart';
 import '../main.dart';
 import 'notification_screen.dart';
@@ -42,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
     //check if user is an admin
-    final userRef = db.collection("users").doc(auth.currentUser!.uid);
+    final userRef = db.collection("trust_users").doc(auth.currentUser!.uid);
     userRef.get().then(
           (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
@@ -70,12 +72,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.person, color: Colors.white),
-            onPressed: () {
+            onPressed: () async{
+
+              final docRef = db.collection("trust_users").doc(FirebaseAuth.instance.currentUser!.uid);
+
+              final response= await docRef.get();
+              final data=response.data();
+
+
+
               Navigator.push(
                 context,
                 MaterialPageRoute<ProfileScreen>(
                   builder: (context) => Scaffold(
                     body: ProfileScreen(
+                      children:[
+
+                        ListTile(title:Text(data?['phone']),subtitle:Text(data?['address']),
+                        trailing: TextButton(child: Text('Edit'),
+                          onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  UserUpdatePage(phone: data?['phone'],address: data?['address'],)),
+                            );
+
+                          },))
+
+                       ],
                       actions: [
                         SignedOutAction((context) {
                           Navigator.of(context).pop();
@@ -391,7 +414,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HavanBookingAdminScreen()),
+                              builder: (context) => const UsersAdminScreen()),
                         );
                       },
                       child: const ListTile(

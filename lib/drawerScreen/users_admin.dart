@@ -5,15 +5,15 @@
 // import 'package:flutter/widgets.dart';
 // import 'package:intl/intl.dart';
 //
-// class UsersBookingAdminScreen extends StatefulWidget {
-//   const UsersBookingAdminScreen({super.key});
+// class UsersAdminScreen extends StatefulWidget {
+//   const UsersAdminScreen({super.key});
 //
 //   @override
-//   State<UsersBookingAdminScreen> createState() =>
-//       _UsersBookingAdminScreenState();
+//   State<UsersAdminScreen> createState() =>
+//       _UsersAdminScreenState();
 // }
 //
-// class _UsersBookingAdminScreenState extends State<UsersBookingAdminScreen> {
+// class _UsersAdminScreenState extends State<UsersAdminScreen> {
 //   final db = FirebaseFirestore.instance;
 //   final usersQuery = FirebaseFirestore.instance
 //       .collectionGroup("appointments")
@@ -101,18 +101,20 @@ import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-class UsersBookingAdminScreen extends StatefulWidget {
-  const UsersBookingAdminScreen({super.key});
+import 'havanScreen/user_havan_appoinments_admin.dart';
+
+class UsersAdminScreen extends StatefulWidget {
+  const UsersAdminScreen({super.key});
 
   @override
-  State<UsersBookingAdminScreen> createState() =>
-      _UsersBookingAdminScreenState();
+  State<UsersAdminScreen> createState() =>
+      _UsersAdminScreenState();
 }
 
-class _UsersBookingAdminScreenState extends State<UsersBookingAdminScreen> {
+class _UsersAdminScreenState extends State<UsersAdminScreen> {
   final db = FirebaseFirestore.instance;
   final usersQuery = FirebaseFirestore.instance
-      .collectionGroup("users");
+      .collection("trust_users");
 
   @override
   Widget build(BuildContext context) {
@@ -121,165 +123,47 @@ class _UsersBookingAdminScreenState extends State<UsersBookingAdminScreen> {
         title: const Text('Users (Admin)',
             style: TextStyle(color: Colors.white, fontSize: 18)),
         centerTitle: true,
+        actions: [
+          //TextField(),
+        IconButton(onPressed: (){}, icon: Icon(Icons.search))
+        ],
       ),
       body: FirestoreListView<Map<String, dynamic>>(
         emptyBuilder: (context) => const Text('You have no appointments'),
         query: usersQuery,
         itemBuilder: (context, snapshot) {
-          Map<String, dynamic> appointment = snapshot.data();
-          final appointmentId = snapshot.id;
-          final String name = appointment['name'];
-          final int year = appointment['schedule'];
-          final int day = appointment['day'];
-          final int slot = appointment['slot'];
-          final String telephone = appointment['telephone'];
-          final String address = appointment['address'];
-          final String status = appointment['status'] ?? 'Cancel';
-          final String userId = appointment['userId'];
+          Map<String, dynamic> user = snapshot.data();
 
-          // Calculate the date from the day of the year and year
-          var date = DateTime(year, 1, 1).add(Duration(days: day - 1));
+          return InkWell(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>   UserHavanBookingAdminScreen(userId:user['userId'] ,)),
+              );
 
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            },
+            child: Card(
+
+              child: Row(
                 children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: ListTile(title: Text(user?['name']),
+                    subtitle: Column(
+                      children: [
+                        Text(user['address'] ,
+                        ),Text(user['phone']),
+                        Text(user['email']),
+
+                      ],
+
+                    ),
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    'Date: ${DateFormat('dd/MM/yyyy').format(date)} ($day)\n'
-                        'Slot: ${slot < 12 ? "$slot AM" : slot == 12 ? "$slot Noon" : "${slot - 12} PM"}\n'
-                        'Contact: $telephone\n'
-                        'Address: $address',
-                    style: const TextStyle(fontSize: 14.0),
-                  ),
-                  const SizedBox(height: 16.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center, // Center the buttons horizontally
-                    children: [
-                      // Cancel/Cancelled Button
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: status == "Cancelled"
-                              ? LinearGradient(
-                            colors: [
-                              Colors.grey.shade400, // Light grey
-                              Colors.grey.shade600, // Darker grey
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                              : LinearGradient(
-                            colors: [
-                              Colors.redAccent,
-                              Colors.red.shade700, // A darker shade of red
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(8), // Rounded corners
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (status == "Cancelled") return;
+                  Column(children: [
+                    for(String xcase in user['cases']??[])
+                      Text(xcase)
 
-                            final appointmentRef =
-                            db.collection("users/$userId/appointments").doc(appointmentId);
-                            appointmentRef.update({
-                              "status": "Cancelled",
-                            });
-
-                            final bookedscheduleRef =
-                            db.collection("schedules_booked").doc('$year');
-                            bookedscheduleRef.update({
-                              "$day": FieldValue.arrayRemove([slot]),
-                            });
-
-                            final scheduleRef = db.collection("schedules").doc('$year');
-                            scheduleRef.update({
-                              "$day": FieldValue.arrayUnion([slot]),
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                            backgroundColor: Colors.transparent, // Transparent for gradient effect
-                            foregroundColor: Colors.white, // Text color
-                            shadowColor: Colors.black.withOpacity(0.5), // Shadow effect
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8), // Match border radius of container
-                            ),
-                          ),
-                          child: Text(
-                            status == "Booked" ? "Cancel" : "Cancelled",
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(width: 20), // Add spacing between buttons
-                      // Details Button
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.orangeAccent, Colors.yellowAccent], // Two colors for the gradient
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(8), // Rounded corners
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Add navigation or dialog logic for details here
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text("Appointment Details"),
-                                content: Text(
-                                  'Name: $name\n'
-                                      'Date: ${DateFormat('dd/MM/yyyy').format(date)}\n'
-                                      'Slot: ${slot < 12 ? "$slot AM" : slot == 12 ? "$slot Noon" : "${slot - 12} PM"}\n'
-                                      'Contact: $telephone\n'
-                                      'Address: $address\n'
-                                      'Status: $status',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text("Close"),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                            backgroundColor: Colors.transparent, // Transparent to show gradient
-                            shadowColor: Colors.black.withOpacity(0.5), // Shadow effect
-                            foregroundColor: Colors.white, // Text color
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8), // Match border radius of gradient
-                            ),
-                          ),
-                          child: const Text("Details"),
-                        ),
-                      ),
-
-
-                    ],
-                  )
-
+                  ],)
                 ],
               ),
             ),

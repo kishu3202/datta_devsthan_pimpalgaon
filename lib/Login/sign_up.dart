@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -28,29 +30,60 @@ class _RegistrationPageState extends State<RegistrationPage> {
     });
   }
 
-  void _register() {
+  void _register() async{
     if (_formKey.currentState!.validate()) {
-      // Save the form and selected tabs
-      final formData = {
-        "name": _nameController.text,
-        "address": _addressController.text,
-        "phone": _phoneController.text,
-        "email": _emailController.text,
-        "password": _passwordController.text,
-        "selectedTabs": _selectedTabs,
-      };
 
-      print("Registration Data: $formData"); // Debugging or save data to backend
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registration Successful!')),
-      );
+      //print("Registration Data: $formData"); // Debugging or save data to backend
+
+      try {
+
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text  ,
+        );
+        //print(credential.user!.uid);
+        // Save the form and selected tabs
+        final formData = {
+          "name": _nameController.text,
+          "address": _addressController.text,
+          "phone": _phoneController.text,
+          "email": _emailController.text,
+          //"password": _passwordController.text,
+          "cases": _selectedTabs,
+          "userId":credential.user!.uid,
+        };
+       await FirebaseFirestore.instance.collection("trust_users").doc(credential.user!.uid).set(formData, SetOptions(merge: true));
+        await credential.user?.updateDisplayName(_nameController.text);
+       ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registration Successful!')),
+        );
+
+        Navigator.of(context).pop();
+
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('The password provided is too weak!!')),
+          );
+          print('');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('The account already exists for that email!!!')),
+          );
+        }
+      } catch (e) {
+        print(e);
+      }
+
+
 
       // Optionally, clear the form after successful registration
-      _formKey.currentState!.reset();
-      setState(() {
-        _selectedTabs.clear();
-      });
+      // _formKey.currentState!.reset();
+      // setState(() {
+      //   _selectedTabs.clear();
+      // });
     }
   }
 
@@ -258,6 +291,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 child: const Text(
                   "Sign Up",
                   style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(child: Text('Or')),
+              const SizedBox(height: 10),
+              InkWell(
+                onTap: (){
+                  Navigator.of(context).pop();
+                },
+
+                child: Center(
+                  child: const Text(
+                    "Login",
+                  ),
                 ),
               ),
             ],

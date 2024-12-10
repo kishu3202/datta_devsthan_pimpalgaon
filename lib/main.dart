@@ -105,7 +105,7 @@ Future<void> setupToken() async{
 
       //make firestore operation to update token in users collection
       final db = FirebaseFirestore.instance;
-      final userRef = db.collection("users").doc(user.uid);
+      final userRef = db.collection("trust_users").doc(user.uid);
 
 // Atomically add a new token to the "deviceTokens" array field.
       userRef.set({
@@ -138,8 +138,8 @@ class DattaDevsthanPimpalgaon extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: false, primarySwatch: Colors.orange),
-      // home: const AuthGate(),
-      home: LoginPage(),
+       home: const AuthGate(),
+      //home: LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }
