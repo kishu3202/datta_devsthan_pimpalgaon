@@ -28,6 +28,16 @@ class _HavanBookingState extends State<HavanBooking> {
   String? _date ;
   int? _slot;
   final db = FirebaseFirestore.instance;
+  List<String> _selectedTabs = [];
+  void _toggleTabSelection(String tab) {
+    setState(() {
+      if (_selectedTabs.contains(tab)) {
+        _selectedTabs.remove(tab); // Deselect the tab if already selected
+      } else {
+        _selectedTabs.add(tab); // Add the tab to the selection
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +254,56 @@ class _HavanBookingState extends State<HavanBooking> {
                             style: const TextStyle(color: Colors.black, fontSize: 16), // Style for dropdown text
                           ),
                         ),
-
+                        // Tabs Selection
+                        Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            // side: BorderSide(color: Colors.black87, width: 2.0),
+                          )  ,
+                          margin: const EdgeInsets.all(6.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "होणारा त्रास:",
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: ["क्रिया", "वाईट शक्ति", "पित्र", "दैविक बाधा", "वास्तुदोष"].map((tab) {
+                                    bool isSelected = _selectedTabs.contains(tab);
+                                    return Expanded(
+                                      child: GestureDetector(
+                                        onTap: () => _toggleTabSelection(tab),
+                                        child: Container(
+                                          height: 50.0,
+                                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          decoration: BoxDecoration(
+                                            color: isSelected ? Colors.greenAccent : Colors.grey[300],
+                                            borderRadius: BorderRadius.circular(8.0),
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            tab,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: isSelected ? Colors.white : Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
 
                       ].expand(
                         (widget) => [
@@ -288,7 +347,8 @@ class _HavanBookingState extends State<HavanBooking> {
                       "slot": _slot,
                       "schedule":widget.date.year,
                       "day": int.parse(DateFormat('D').format(widget.date)),
-                      "userId": FirebaseAuth.instance.currentUser!.uid
+                      "userId": FirebaseAuth.instance.currentUser!.uid,
+                      "cases": _selectedTabs,
                     };
 
                      db

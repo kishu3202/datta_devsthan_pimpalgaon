@@ -37,6 +37,7 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
           final int day = appointment['day'];
           final int slot = appointment['slot'];
           final String status = appointment['status'] ?? 'Booked';
+          final cases=appointment['cases'];
 
           // To calculate date from day of the year and year
           var date = DateTime(year, 1, 1).add(Duration(days: day - 1));
@@ -71,6 +72,14 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
                         color: status == 'Booked' ? Colors.green : Colors.red),
                   ),
                   const SizedBox(height: 16),
+              Row(children: [
+                for(String xcase in cases??[])
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(xcase),
+                  )
+
+              ],),
 
                   TextButton(
                     onPressed: () {
