@@ -6,7 +6,7 @@ class Userdetails extends StatefulWidget {
   final String mobileNumber;
   final String havanDate;
   final int totalHavan;
-  final List<String> trass;
+  final List trass;
 
   const Userdetails({
     super.key,

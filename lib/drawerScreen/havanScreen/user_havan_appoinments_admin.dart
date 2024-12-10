@@ -132,6 +132,7 @@ class _UserHavanBookingAdminScreenState extends State<UserHavanBookingAdminScree
           Map<String, dynamic> appointment = snapshot.data();
           final appointmentId = snapshot.id;
           final String name = appointment['name'];
+          final  cases= appointment['cases']??[];
           final int year = appointment['schedule'];
           final int day = appointment['day'];
           final int slot = appointment['slot'];
@@ -168,6 +169,16 @@ class _UserHavanBookingAdminScreenState extends State<UserHavanBookingAdminScree
                         'Contact: $telephone\n'
                         'Address: $address',
                     style: const TextStyle(fontSize: 14.0),
+                  ),
+                      const SizedBox(height: 16),
+                  Row(children: [
+                    for(String xcase in cases??[])
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(xcase),
+                      )
+
+                  ],
                   ),
                   const SizedBox(height: 16.0),
                   Row(

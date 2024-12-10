@@ -33,11 +33,14 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
         itemBuilder: (context, snapshot) {
           Map<String, dynamic> appointment = snapshot.data();
           final String name = appointment['name'];
+          final String address = appointment['address'];
+          final  cases= appointment['cases']??[];
+          final String phone = appointment['telephone'];
           final int year = appointment['schedule'];
           final int day = appointment['day'];
           final int slot = appointment['slot'];
           final String status = appointment['status'] ?? 'Booked';
-          final cases=appointment['cases'];
+
 
           // To calculate date from day of the year and year
           var date = DateTime(year, 1, 1).add(Duration(days: day - 1));
@@ -71,15 +74,16 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
                         fontSize: 16,
                         color: status == 'Booked' ? Colors.green : Colors.red),
                   ),
-                  const SizedBox(height: 16),
-              Row(children: [
-                for(String xcase in cases??[])
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(xcase),
-                  )
-
-              ],),
+              //     const SizedBox(height: 16),
+              // Row(children: [
+              //   for(String xcase in cases??[])
+              //     Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Text(xcase),
+              //     )
+              //
+              // ],
+              // ),
 
                   TextButton(
                     onPressed: () {
@@ -87,7 +91,8 @@ class _HavanBookingScreenState extends State<HavanBookingScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Userdetails(name: '', address: '', mobileNumber: '', havanDate: '', totalHavan: 0, trass: [],),
+                          builder: (context) =>  Userdetails(name: name, address: address, mobileNumber: phone, havanDate: 'Date: ${DateFormat('dd/MM/yyyy').format(date)} ($day) ' +
+                              'Slot: ${slot < 12 ? "$slot am" : slot == 12 ? "$slot noon" : "${slot - 12} pm"}', totalHavan: 0, trass: cases,),
                         ),
                       );
                     },
