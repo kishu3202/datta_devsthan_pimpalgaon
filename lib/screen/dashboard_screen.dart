@@ -7,6 +7,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
+import '../auth_gate.dart';
 import '../drawerScreen/aratiScreen/aratiScreen.dart';
 import '../drawerScreen/contact_screen.dart';
 import '../drawerScreen/donation_screen.dart';
@@ -78,6 +79,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       actions: [
                         SignedOutAction((context) {
                           Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const AuthGate()),
+                          );
                         }),
                       ],
                     ),
@@ -359,7 +366,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   if(isAdmin)
-
                     InkWell(
                       onTap: () {
                         Navigator.push(
@@ -379,6 +385,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                     ),
+                  if(isAdmin)
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HavanBookingAdminScreen()),
+                        );
+                      },
+                      child: const ListTile(
+                        leading: Icon(
+                          Icons.list_alt,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          'Users (Admin)',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                    ),
+
                   const SizedBox(
                     height: 60,
                   ),
