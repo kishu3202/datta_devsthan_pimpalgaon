@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:datta_devsthan_pimpalgaon/Login/login_Page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -137,7 +138,8 @@ class DattaDevsthanPimpalgaon extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: false, primarySwatch: Colors.orange),
-      home: const AuthGate(),
+      // home: const AuthGate(),
+      home: LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }
