@@ -311,25 +311,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) =>  YoutubeScreen()),
-                      // );
-                    },
-                    child: const ListTile(
-                      leading: Icon(
-                        Icons.play_circle_outline,
-                        color: Colors.white,
-                      ),
-                      title: Text(
-                        'YouTube',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     // Navigator.push(
+                  //     //   context,
+                  //     //   MaterialPageRoute(
+                  //     //       builder: (context) =>  YoutubeScreen()),
+                  //     // );
+                  //   },
+                  //   child: const ListTile(
+                  //     leading: Icon(
+                  //       Icons.play_circle_outline,
+                  //       color: Colors.white,
+                  //     ),
+                  //     title: Text(
+                  //       'YouTube',
+                  //       style: TextStyle(color: Colors.white, fontSize: 18),
+                  //     ),
+                  //   ),
+                  // ),
                   InkWell(
                     onTap: () {
                       Navigator.push(

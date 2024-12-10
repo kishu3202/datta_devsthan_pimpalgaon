@@ -303,11 +303,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
                 child: Center(
                   child: const Text(
-                    "Login",
+                    "Login",style: TextStyle(fontSize: 18, color: Colors.orangeAccent,
                   ),
                 ),
               ),
-            ],
+              ),],
           ),
         ),
       ),
