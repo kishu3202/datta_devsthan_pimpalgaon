@@ -211,7 +211,7 @@ class _UserHavanBookingAdminScreenState extends State<UserHavanBookingAdminScree
                             if (status == "Cancelled") return;
 
                             final appointmentRef =
-                            db.collection("users/$userId/appointments").doc(appointmentId);
+                            db.collection("trust_users/$userId/appointments").doc(appointmentId);
                             appointmentRef.update({
                               "status": "Cancelled",
                             });

@@ -43,7 +43,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 exports.createappointment = functions.firestore
-    .document('appointments/{appointmentId}')
+    .document('trust_users/{userId}/appointments/{appointmentId}')
     .onCreate( async(snap, context) => {
       // Get an object representing the document
       // e.g. {'name': 'Marie', 'age': 66}
@@ -63,6 +63,18 @@ exports.createappointment = functions.firestore
       // access a particular field as you would any JS property
       const userId = data.userId;
 
+// create notification doc
+
+ const notification = {
+          message: 'new appointment booked by '+data.name,
+          date: new Date(),
+          isRead: false,
+          appointmentId:context.params.appointmentId,
+          isAdmin: true
+        };
+
+        // Add a new document in collection "cities" with ID 'LA'
+        await admin.firestore().collection('notifications').doc().set(notification);
 
 
        // get all admins tokens
@@ -98,21 +110,11 @@ exports.createappointment = functions.firestore
 
 
 
-        const notification = {
-          message: 'new appointment booked by '+data.name,
-          date: new Date(),
-          isRead: false,
-          appointmentId:context.params.appointmentId,
-          isAdmin: true
-        };
-
-        // Add a new document in collection "cities" with ID 'LA'
-        await admin.firestore().collection('notifications').doc().set(notification);
 
     });
 
 exports.updateappointment = functions.firestore
-    .document('appointments/{appointmentId}')
+    .document('trust_users/{userId}/appointments/{appointmentId}')
     .onUpdate( async(snap, context) => {
       // Get an object representing the document
       // e.g. {'name': 'Marie', 'age': 66}
@@ -138,21 +140,35 @@ exports.updateappointment = functions.firestore
       if(previousStatus==newStatus){
       return;
       }
+      // create notification doc
+              const notification = {
+                message: 'Appointment '+newStatus,
+                date: new Date(),
+                isRead: false,
+                appointmentId:context.params.appointmentId,
+                isAdmin: false,
+                userId:userId
+              };
+
+              // Add a new document in collection "cities" with ID 'LA'
+              await admin.firestore().collection('notifications').doc().set(notification);
+
 
        // get all user tokens
-       const adminsRef = admin.firestore().collection('trust_users').doc(userId);
-       const adminSnapshot = await adminsRef.get();
-       if (adminSnapshot.empty) {
+       const userRef = admin.firestore().collection('trust_users').doc(userId);
+       const userDoc = await userRef.get();
+       if (userDoc.empty) {
          console.log('No matching documents.');
          return;
        }
+
+
        const registrationTokens = [];
-       adminSnapshot.forEach(doc => {
-         console.log(doc.id, '=>', doc.data());
-         doc.data().deviceTokens.forEach(token => {
+         if(userDoc.data().deviceTokens.length>0)
+         userDoc.data().deviceTokens.forEach(token => {
                  registrationTokens.push(token);
            });
-       });
+
 
 
 
@@ -172,16 +188,26 @@ exports.updateappointment = functions.firestore
 
 
 
-        const notification = {
-          message: 'Appointment '+newStatus,
-          date: new Date(),
-          isRead: false,
-          appointmentId:context.params.appointmentId,
-          isAdmin: false,
-          userId:userId
-        };
-
-        // Add a new document in collection "cities" with ID 'LA'
-        await admin.firestore().collection('notifications').doc().set(notification);
 
     });
+
+// Clean tokens
+
+// Cleans up the tokens that are no longer valid.
+function cleanupTokens(response, tokens) {
+ // For each notification we check if there was an error.
+// const tokensDelete = [];
+// response.results.forEach((result, index) => {
+//   const error = result.error;
+//   if (error) {
+//     functions.logger.error('Failure sending notification to', tokens[index], error);
+//     // Cleanup the tokens that are not registered anymore.
+//     if (error.code === 'messaging/invalid-registration-token' ||
+//         error.code === 'messaging/registration-token-not-registered') {
+//       const deleteTask = admin.firestore().collection('fcmTokens').doc(tokens[index]).delete();
+//       tokensDelete.push(deleteTask);
+//     }
+//   }
+// });
+// return Promise.all(tokensDelete);
+}
