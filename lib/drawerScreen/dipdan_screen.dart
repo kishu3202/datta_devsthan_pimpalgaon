@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wakelock/wakelock.dart';
+//import 'package:wakelock/wakelock.dart';
 
 
 class DipdanScreen extends StatefulWidget {
@@ -19,12 +19,12 @@ class _DipdanScreenState extends State<DipdanScreen> {
     super.initState();
     _controller  = VideoPlayerController.asset('asset/vedio/dipdaanVedio.mp4');
     _initializeVideoPlayerFuture = _controller.initialize();
-    Wakelock.enable();
+   // Wakelock.enable();
   }
   @override
   void dispose(){
     _controller.dispose();
-    Wakelock.disable();
+    //Wakelock.disable();
     super.dispose();
   }
 
@@ -75,10 +75,10 @@ class _DipdanScreenState extends State<DipdanScreen> {
                     setState(() {
                       if (_controller.value.isPlaying) {
                         _controller.pause();
-                        Wakelock.disable();
+                        //Wakelock.disable();
                       } else {
                         _controller.play();
-                        Wakelock.enable();
+                       // Wakelock.enable();
                       }
                     });
                   },
