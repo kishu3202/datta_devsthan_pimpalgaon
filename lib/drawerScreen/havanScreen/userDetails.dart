@@ -35,40 +35,42 @@ class _UserdetailsState extends State<Userdetails> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Name
-            _buildDetailRow('नाव:', widget.name),
-
-            // Address
-            _buildDetailRow('पत्ता:', widget.address),
-
-            // Mobile Number
-            _buildDetailRow('फोन नंबर:', widget.mobileNumber),
-
-            // Havan Date
-            _buildDetailRow('हवन तारीख:', widget.havanDate),
-
-            // Total Havan
-            _buildDetailRow('एकूण हवन:', widget.totalHavan.toString()),
-
-            // Problems/Trass
-            const SizedBox(height: 8),
-            const Text(
-              'होणारा त्रास:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            ...widget.trass.map(
-                  (trass) => Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 4.0),
-                child: Text(
-                  '- $trass',
-                  style: const TextStyle(fontSize: 14),
+        child: Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Name
+              _buildDetailRow('नाव:', widget.name),
+          
+              // Address
+              _buildDetailRow('पत्ता:', widget.address),
+          
+              // Mobile Number
+              _buildDetailRow('फोन नंबर:', widget.mobileNumber),
+          
+              // Havan Date
+              _buildDetailRow('हवन तारीख:', widget.havanDate),
+          
+              // Total Havan
+              // _buildDetailRow('एकूण हवन:', widget.totalHavan.toString()),
+          
+              // Problems/Trass
+              const SizedBox(height: 8),
+              const Text(
+                'होणारा त्रास:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              ...widget.trass.map(
+                    (trass) => Padding(
+                  padding: const EdgeInsets.only(left: 16.0, top: 4.0),
+                  child: Text(
+                    '- $trass',
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
